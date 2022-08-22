@@ -1,0 +1,3 @@
+com/myapp/data/repo/MyRepo_Factory.java
+ com.myapp.data.repo.MyRepo_Factory
+ com.myapp.data.repo.MyRepo_Factory$InstanceHolder
