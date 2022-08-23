@@ -2,7 +2,7 @@ package com.myapp.ui.feature.splash
 
 import androidx.compose.runtime.*
 import com.arkivanov.decompose.ComponentContext
-import com.myapp.di.AppComponent
+import com.myapp.actify.di.AppComponent
 import com.myapp.ui.navigation.Component
 import javax.inject.Inject
 

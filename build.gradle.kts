@@ -8,6 +8,9 @@ plugins {
     kotlin("kapt") version kotlinVersion
     id("org.jetbrains.compose") version "1.1.1"
 }
+kapt {
+    correctErrorTypes = true
+}
 
 group = "com.myapp"
 version = "1.0.0"
@@ -27,10 +30,11 @@ dependencies {
 
     // Module dependencies
     implementation(project(":data"))
-
     // Dagger : A fast dependency injector for Android and Java.
-    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
-    kaptTest("com.google.dagger:dagger-compiler:$daggerVersion")
+  /*  kapt("com.google.dagger:dagger-compiler:$daggerVersion")
+    kaptTest("com.google.dagger:dagger-compiler:$daggerVersion")*/
+    implementation ("com.google.dagger:dagger:$daggerVersion")
+    kapt ("com.google.dagger:dagger-compiler:$daggerVersion")
 
     // Cyclone : https://github.com/theapache64/cyclone
     implementation("com.theapache64:cyclone:1.0.0-alpha01")
@@ -40,6 +44,16 @@ dependencies {
     implementation("com.arkivanov.decompose:decompose-jvm:$decomposeVersion")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains-jvm:$decomposeVersion")
 
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.moshi:moshi:1.13.0")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.13.0")
+
+/*    implementation ("com.squareup.okhttp3:okhttp-bom:4.10.0")
+    implementation ("com.squareup.okhttp3:okhttp")
+    implementation ("com.squareup.okhttp3:logging-interceptor")*/
 
     /**
      * Testing Dependencies

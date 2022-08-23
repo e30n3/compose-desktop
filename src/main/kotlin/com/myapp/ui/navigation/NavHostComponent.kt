@@ -7,8 +7,8 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.cros
 import com.arkivanov.decompose.replaceCurrent
 import com.arkivanov.decompose.router
 import com.arkivanov.decompose.statekeeper.Parcelable
-import com.myapp.di.AppComponent
-import com.myapp.di.DaggerAppComponent
+import com.myapp.actify.di.AppComponent
+import com.myapp.actify.di.DaggerAppComponent
 import com.myapp.ui.feature.main.MainScreenComponent
 import com.myapp.ui.feature.splash.SplashScreenComponent
 
@@ -27,8 +27,8 @@ class NavHostComponent(
         object Main : Config()
     }
 
-    private val appComponent: AppComponent = DaggerAppComponent
-        .create()
+
+    private val appComponent: AppComponent = DaggerAppComponent.create()
 
     /**
      * Router configuration

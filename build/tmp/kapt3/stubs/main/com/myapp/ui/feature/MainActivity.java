@@ -1,20 +1,25 @@
 package com.myapp.ui.feature;
 
-import java.lang.System;
+import com.myapp.App;
+import com.myapp.ui.navigation.NavHostComponent;
+import com.theapache64.cyclone.core.Activity;
+import com.theapache64.cyclone.core.Intent;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 /**
  * The activity who will be hosting all screens in this app
  */
 @kotlin.Metadata(mv = {1, 6, 0}, k = 1, d1 = {"\u0000\u0014\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0002\b\u0002\b\u0007\u0018\u0000 \u00052\u00020\u0001:\u0001\u0005B\u0005\u00a2\u0006\u0002\u0010\u0002J\b\u0010\u0003\u001a\u00020\u0004H\u0016\u00a8\u0006\u0006"}, d2 = {"Lcom/myapp/ui/feature/MainActivity;", "Lcom/theapache64/cyclone/core/Activity;", "()V", "onCreate", "", "Companion", "compose-desktop-template"})
 public final class MainActivity extends com.theapache64.cyclone.core.Activity {
-    @org.jetbrains.annotations.NotNull()
+    @org.jetbrains.annotations.NotNull
     public static final com.myapp.ui.feature.MainActivity.Companion Companion = null;
     
     public MainActivity() {
         super();
     }
     
-    @java.lang.Override()
+    @java.lang.Override
     public void onCreate() {
     }
     
@@ -25,7 +30,7 @@ public final class MainActivity extends com.theapache64.cyclone.core.Activity {
             super();
         }
         
-        @org.jetbrains.annotations.NotNull()
+        @org.jetbrains.annotations.NotNull
         public final com.theapache64.cyclone.core.Intent getStartIntent() {
             return null;
         }

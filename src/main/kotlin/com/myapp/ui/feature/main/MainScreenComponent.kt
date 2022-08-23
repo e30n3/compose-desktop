@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import com.arkivanov.decompose.ComponentContext
-import com.myapp.di.AppComponent
+import com.myapp.actify.di.AppComponent
 import com.myapp.ui.navigation.Component
 import javax.inject.Inject
 
