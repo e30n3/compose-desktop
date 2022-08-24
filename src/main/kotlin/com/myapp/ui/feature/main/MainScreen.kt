@@ -8,18 +8,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.myapp.ui.feature.drawer.ActivateTerminalScreen
+import com.myapp.ui.feature.drawer.terminal.TerminalStatusScreen
 import com.myapp.ui.value.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import com.myapp.ui.feature.drawer.ReportScreen
-import com.myapp.ui.feature.drawer.TerminalStatusScreen
+import ru.involta.actify.domain.Result
 
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -30,7 +31,22 @@ fun MainScreen(
   val def = 16.dp
   val scaffoldState = rememberScaffoldState()
   val coroutineScope = rememberCoroutineScope()
+  val terminalState = viewModel.stateTerminals.collectAsState()
 
+
+  LaunchedEffect(key1 = terminalState.value.status) {
+    when (terminalState.value.status) {
+      Result.Status.SUCCESS -> {
+      }
+      Result.Status.ERROR -> {
+      }
+      Result.Status.LOADING -> {
+      }
+      Result.Status.EMPTY -> {
+        viewModel.getTerminal()
+      }
+    }
+  }
 
   Row {
     //drawer
@@ -46,7 +62,7 @@ fun MainScreen(
         Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
           lateinit var update: () -> Unit
           Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            update = viewModel.innerViewModels.renderStatus(Modifier.padding(def)) {
+            update = TerminalStatusScreen(Modifier.padding(def), viewModel) {
               coroutineScope.launch {
                 delay(100)
                 viewModel.getTerminal()
@@ -63,7 +79,7 @@ fun MainScreen(
               else Spacer(Modifier.weight(1f))
             }
           }
-          AnimatedVisibility(!viewModel.isAuth, Modifier.weight(1f)) {
+          AnimatedVisibility(!viewModel.isAuth) {
             Box(
               modifier = Modifier.padding(def),
             ) {

@@ -1,4 +1,4 @@
-package com.myapp.ui.feature.drawer
+package com.myapp.ui.feature.drawer.report
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.*
@@ -24,7 +24,7 @@ import ru.involta.actify.domain.entity.api.response.ReportBody
 import ru.involta.actify.util.extention.shimmer
 
 @Composable
-fun ReportScreen(viewModel: ReportViewModel,modifier: Modifier = Modifier) {
+fun ReportScreen(viewModel: ReportViewModel, modifier: Modifier = Modifier) {
   val def = remember { 16.dp }
   val reportState = viewModel.stateReport.collectAsState()
 /*  val dialogState = rememberMaterialDialogState()
@@ -114,7 +114,6 @@ fun ReportScreen(viewModel: ReportViewModel,modifier: Modifier = Modifier) {
         }
       }
     }
-
   }
 }
 

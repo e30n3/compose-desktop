@@ -1,4 +1,4 @@
-package com.myapp.ui.feature.drawer
+package com.myapp.ui.feature.drawer.terminal
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
@@ -12,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.myapp.ui.feature.main.MainViewModel
 import ru.involta.actify.domain.Result
 import ru.involta.actify.util.extention.glow
 
@@ -19,10 +20,9 @@ import ru.involta.actify.util.extention.glow
 @Composable
 fun TerminalStatusScreen(
   modifier: Modifier = Modifier,
-  viewModel: TerminalStatusViewModel,
+  viewModel: MainViewModel,
   onExit: () -> Unit
 ): () -> Unit {
-  val terminalsState = viewModel.stateTerminals.collectAsState()
   val def = 16.dp
   LaunchedEffect(key1 = Unit) {
     viewModel.getTerminal()
@@ -34,9 +34,9 @@ fun TerminalStatusScreen(
       color = MaterialTheme.colors.surface,
       modifier = Modifier.glow(MaterialTheme.colors.primary)
     ) {
-      Crossfade(targetState = terminalsState.value.status) {
-        when (it) {
-          Result.Status.SUCCESS -> terminalsState.value.data?.let { terminal ->
+      Crossfade(targetState = viewModel.stateTerminals.value.status) {
+        when (viewModel.stateTerminals.value.status) {
+          Result.Status.SUCCESS -> {
             ListItem(modifier = Modifier
               //.padding(horizontal = def)
               .fillMaxWidth(),
@@ -51,27 +51,20 @@ fun TerminalStatusScreen(
                   Icon(imageVector = Icons.Filled.Logout, contentDescription = "")
                 }
               }, text = {
-                Text(text = "${terminal.name} - ${terminal.id}")
+                Text(text = "${viewModel.stateTerminals.value.data?.name} - ${viewModel.stateTerminals.value.data?.id}")
               }, singleLineSecondaryText = false
             )
           }
-          else -> terminalsState.value.exception?.let { e ->
-            Surface(
-              elevation = def / 2,
-              shape = RoundedCornerShape(def),
-              modifier = Modifier.glow(MaterialTheme.colors.primary),
-              color = MaterialTheme.colors.surface
-            ) {
-              ListItem(modifier = Modifier
-                //.padding(horizontal = def)
-                .fillMaxWidth(),
-                secondaryText = {
-                  Text(text = "Активируйте терминал, чтобы пользоваться приложением")
-                }, text = {
-                  Text(text = "Терминал не активирован")
-                }, singleLineSecondaryText = false
-              )
-            }
+          else -> {
+            ListItem(modifier = Modifier
+              //.padding(horizontal = def)
+              .fillMaxWidth(),
+              secondaryText = {
+                Text(text = "Активируйте терминал, чтобы пользоваться приложением")
+              }, text = {
+                Text(text = "Терминал не активирован")
+              }, singleLineSecondaryText = false
+            )
           }
         }
       }

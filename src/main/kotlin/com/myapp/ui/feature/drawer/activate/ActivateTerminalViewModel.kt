@@ -1,4 +1,4 @@
-package com.myapp.ui.feature.drawer
+package com.myapp.ui.feature.drawer.activate
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.involta.actify.domain.Result
-import ru.involta.actify.domain.entity.api.response.TerminalRegistrationResponse
+import com.myapp.actify.domain.entity.api.response.TerminalRegistrationResponse
 import javax.inject.Inject
 
 

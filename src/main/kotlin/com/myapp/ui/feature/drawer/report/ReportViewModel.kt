@@ -1,4 +1,4 @@
-package com.myapp.ui.feature.drawer
+package com.myapp.ui.feature.drawer.report
 
 
 import com.myapp.actify.data.Interactor

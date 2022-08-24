@@ -1,4 +1,4 @@
-package com.myapp.ui.feature.drawer
+package com.myapp.ui.feature.drawer.terminal
 
 import com.myapp.actify.data.Interactor
 import com.myapp.util.ViewModel
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.involta.actify.domain.Result
-import ru.involta.actify.domain.entity.api.response.TerminalRegistrationResponse
+import com.myapp.actify.domain.entity.api.response.TerminalRegistrationResponse
 import javax.inject.Inject
 
 

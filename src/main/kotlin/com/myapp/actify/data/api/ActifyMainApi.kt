@@ -1,14 +1,12 @@
 package com.myapp.actify.data.api
 
-import com.myapp.actify.di.RemoteModule
-import dagger.Component
+import com.myapp.actify.domain.entity.api.response.TerminalRegistrationResponse
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import ru.involta.actify.domain.entity.api.ResponseBody
 import ru.involta.actify.domain.entity.api.request.*
 import ru.involta.actify.domain.entity.api.response.*
-import javax.inject.Singleton
 
 
 interface ActifyMainApi {

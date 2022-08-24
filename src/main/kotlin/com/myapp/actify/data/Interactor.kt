@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import ru.involta.actify.data.repository.ActifyRepository
 import ru.involta.actify.domain.entity.api.ResponseBody
-import ru.involta.actify.domain.entity.api.response.TerminalRegistrationResponse
+import com.myapp.actify.domain.entity.api.response.TerminalRegistrationResponse
 import javax.inject.Inject
 import javax.inject.Singleton
 
