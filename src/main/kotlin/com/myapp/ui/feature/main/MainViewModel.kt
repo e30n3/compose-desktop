@@ -9,6 +9,7 @@ import com.myapp.ui.feature.drawer.activate.ActivateTerminalScreen
 import com.myapp.ui.feature.drawer.activate.ActivateTerminalViewModel
 import com.myapp.ui.feature.drawer.report.ReportScreen
 import com.myapp.ui.feature.drawer.report.ReportViewModel
+import com.myapp.ui.feature.option.OptionViewModel
 import com.myapp.util.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.involta.actify.domain.Result
+import ru.involta.actify.ui.screen.main.nested.OptionScreen
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
@@ -74,6 +76,12 @@ class MainViewModel @Inject constructor(
     fun renderReport(modifier: Modifier = Modifier) {
       val scope = rememberCoroutineScope()
       ReportScreen(ReportViewModel(interactor).apply { init(scope) }, modifier)
+    }
+
+    @Composable
+    fun renderOption() {
+      val scope = rememberCoroutineScope()
+      OptionScreen(OptionViewModel(interactor).apply { init(scope) })
     }
 
     @Composable

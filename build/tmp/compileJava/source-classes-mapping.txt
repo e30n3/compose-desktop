@@ -8,14 +8,10 @@ com/myapp/actify/data/Interactor_Factory.java
  com.myapp.actify.data.Interactor_Factory
 com/myapp/ui/feature/drawer/report/ReportViewModel_Factory.java
  com.myapp.ui.feature.drawer.report.ReportViewModel_Factory
-com/myapp/actify/di/RemoteModule_ProvideRegistrationApiFactory.java
- com.myapp.actify.di.RemoteModule_ProvideRegistrationApiFactory
 com/myapp/ui/feature/splash/SplashViewModel_Factory.java
  com.myapp.ui.feature.splash.SplashViewModel_Factory
 com/myapp/ui/feature/drawer/terminal/TerminalStatusViewModel_Factory.java
  com.myapp.ui.feature.drawer.terminal.TerminalStatusViewModel_Factory
-com/myapp/ui/feature/main/MainViewModel_Factory.java
- com.myapp.ui.feature.main.MainViewModel_Factory
 com/myapp/ui/feature/splash/SplashScreenComponent_MembersInjector.java
  com.myapp.ui.feature.splash.SplashScreenComponent_MembersInjector
 com/myapp/ui/feature/main/MainScreenComponent_MembersInjector.java
@@ -24,3 +20,9 @@ com/myapp/actify/di/DaggerAppComponent.java
  com.myapp.actify.di.DaggerAppComponent
  com.myapp.actify.di.DaggerAppComponent$AppComponentImpl
  com.myapp.actify.di.DaggerAppComponent$Builder
+com/myapp/actify/di/RemoteModule_ProvideRegistrationApiFactory.java
+ com.myapp.actify.di.RemoteModule_ProvideRegistrationApiFactory
+com/myapp/ui/feature/option/OptionViewModel_Factory.java
+ com.myapp.ui.feature.option.OptionViewModel_Factory
+com/myapp/ui/feature/main/MainViewModel_Factory.java
+ com.myapp.ui.feature.main.MainViewModel_Factory

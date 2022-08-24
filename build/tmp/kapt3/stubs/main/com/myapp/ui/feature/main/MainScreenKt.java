@@ -1,9 +1,8 @@
 package com.myapp.ui.feature.main;
 
-import androidx.compose.animation.*;
+import androidx.compose.animation.ExperimentalAnimationApi;
 import androidx.compose.foundation.layout.*;
 import androidx.compose.material.*;
-import androidx.compose.material.icons.Icons;
 import androidx.compose.runtime.Composable;
 import androidx.compose.ui.Alignment;
 import androidx.compose.ui.Modifier;

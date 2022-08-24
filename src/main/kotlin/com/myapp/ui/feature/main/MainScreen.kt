@@ -1,12 +1,10 @@
 package com.myapp.ui.feature.main
 
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,7 +19,16 @@ import com.myapp.ui.value.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.involta.actify.domain.Result
+import ru.involta.actify.ui.screen.main.nested.OptionScreen
 
+
+enum class ActionScreen(){
+  ACCRUE,
+  DEBIT,
+  PRIZES,
+  REGISTRATION,
+  NOTHING
+}
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -97,60 +104,39 @@ fun MainScreen(
       }
     }
     //content
-    Box(
-      modifier = Modifier.zIndex(1f).weight(2f).fillMaxHeight(),
-      contentAlignment = Alignment.Center
-    ) {
-      Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = {
-          TopAppBar(elevation = def) {
-            Icon(
-              painterResource(R.drawable.actifyLogo),
-              contentDescription = "",
-              Modifier.padding(vertical = def / 1.1f, horizontal = def)
-            )
-          }
-        },
-        bottomBar = {
-          BottomAppBar(cutoutShape = MaterialTheme.shapes.small.copy(CornerSize(percent = 50))) {
-            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
-              Row() {
-                AnimatedVisibility(
-                  visible = true/*terminalState.value.status == Result.Status.SUCCESS && backStackEntry.value?.destination?.route != MainRoutes.OPTION.route*/,
-                  enter = slideInVertically { it / 2 } + fadeIn(),
-                  exit = slideOutVertically { it / 2 } + fadeOut()
-                ) {
-                  IconButton(
-                    onClick = { /*mainNavController.popBackStack()*/ },
-                  ) {
-                    Icon(Icons.Filled.ArrowBack, "")
-                  }
-                }
-                AnimatedVisibility(
-                  visible = true/*terminalState.value.status == Result.Status.SUCCESS && backStackEntry.value?.destination?.route != MainRoutes.OPTION.route*/,
-                  enter = slideInVertically { it / 2 } + fadeIn(),
-                  exit = slideOutVertically { it / 2 } + fadeOut()
-                ) {
-                  IconButton(onClick = {
-                    /*mainNavController.navigate(MainRoutes.OPTION.route) {
-                      popUpTo(MainRoutes.OPTION.route) {
-                        inclusive = true
-                      }
-                    }*/
-                  }
-                  ) {
-                    Icon(Icons.Filled.Home, "")
-                  }
-                }
-              }
-            }
-          }
-        },
-      ) {
 
+    Scaffold(
+      modifier = Modifier.zIndex(1f).weight(1f).fillMaxHeight(),
+      scaffoldState = scaffoldState,
+      topBar = {
+        TopAppBar(elevation = def) {
+          Icon(
+            painterResource(R.drawable.actifyLogo),
+            contentDescription = "",
+            Modifier.padding(vertical = def / 1.1f, horizontal = def)
+          )
+        }
+      },
+    ) {
+      Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+        AnimatedVisibility(viewModel.isAuth){
+          viewModel.innerViewModels.renderOption()
+        }
       }
     }
+    //content2
+    Surface(
+      elevation = def,
+      modifier = Modifier.zIndex(2f).weight(1f).fillMaxHeight(),
+      color = MaterialTheme.colors.surface
+    ) {
+      Column(Modifier.fillMaxSize()) {
+        TopAppBar(contentPadding = PaddingValues(horizontal = def)) {
+          Text(text = "Действие", style = MaterialTheme.typography.h6)
+        }
+      }
+    }
+
   }
 
 
