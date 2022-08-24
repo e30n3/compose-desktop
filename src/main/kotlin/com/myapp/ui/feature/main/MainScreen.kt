@@ -2,7 +2,6 @@ package com.myapp.ui.feature.main
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -11,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.myapp.ui.element.ActifyButton
 import com.myapp.ui.value.R
 import ru.involta.actify.domain.Result
 
@@ -49,7 +49,7 @@ fun MainScreen(
                 modifier = Modifier.height(10.dp)
             )
 
-            Button(
+            ActifyButton(
                 onClick = {
                     viewModel.onClickMeClicked()
                 }

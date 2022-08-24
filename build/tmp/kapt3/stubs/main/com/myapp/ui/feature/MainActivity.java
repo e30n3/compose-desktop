@@ -4,8 +4,6 @@ import com.myapp.App;
 import com.myapp.ui.navigation.NavHostComponent;
 import com.theapache64.cyclone.core.Activity;
 import com.theapache64.cyclone.core.Intent;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 
 /**
  * The activity who will be hosting all screens in this app

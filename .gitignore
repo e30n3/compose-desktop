@@ -20,3 +20,4 @@ build/tmp/kapt3/incrementalData/main/com/myapp/ui/feature/main/MainScreenCompone
 build/*
 .gradle/*
 .idea/*
+*build/classes/*

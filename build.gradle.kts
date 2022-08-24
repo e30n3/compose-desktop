@@ -31,10 +31,10 @@ dependencies {
     // Module dependencies
     implementation(project(":data"))
     // Dagger : A fast dependency injector for Android and Java.
-  /*  kapt("com.google.dagger:dagger-compiler:$daggerVersion")
-    kaptTest("com.google.dagger:dagger-compiler:$daggerVersion")*/
-    implementation ("com.google.dagger:dagger:$daggerVersion")
-    kapt ("com.google.dagger:dagger-compiler:$daggerVersion")
+    /*  kapt("com.google.dagger:dagger-compiler:$daggerVersion")
+      kaptTest("com.google.dagger:dagger-compiler:$daggerVersion")*/
+    implementation("com.google.dagger:dagger:$daggerVersion")
+    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
 
     // Cyclone : https://github.com/theapache64/cyclone
     implementation("com.theapache64:cyclone:1.0.0-alpha01")
@@ -44,6 +44,8 @@ dependencies {
     implementation("com.arkivanov.decompose:decompose-jvm:$decomposeVersion")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains-jvm:$decomposeVersion")
 
+    //super ellipse
+    /*api("com.github.racra:smooth-corner-rect-android-compose:v1.0.0")*/
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
@@ -81,7 +83,7 @@ dependencies {
     testImplementation(kotlin("test-junit5"))
 }
 
-tasks.withType<KotlinCompile>() {
+tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "11"
 }
 
