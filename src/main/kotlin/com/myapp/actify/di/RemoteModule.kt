@@ -7,35 +7,28 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import com.myapp.actify.data.api.ActifyMainApi
 import com.myapp.actify.data.api.ActifyRegistrationApi
-import javax.inject.Named
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
 class RemoteModule {
 
 
-/*
-  @Provides
-  @Singleton
-  fun httpLoggingInterceptor(): HttpLoggingInterceptor =
-    HttpLoggingInterceptor().apply {
-      level = HttpLoggingInterceptor.Level.BODY
-    }
 
   @Provides
   @Singleton
-  fun httpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
-    OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor)
+  fun httpClient(): OkHttpClient =
+    OkHttpClient.Builder()
       .connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build()
-*/
+
 
 
   @Provides
   @Singleton
-  fun provideMainApi(/*okHttpClient: OkHttpClient*/): ActifyMainApi {
+  fun provideMainApi(okHttpClient: OkHttpClient): ActifyMainApi {
     val retrofit =  Retrofit.Builder()
       .baseUrl("https://api.ifriend.involta.pro/")
-      /*.client(okHttpClient)*/
+      .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create())
       .build()
     return retrofit.create(ActifyMainApi::class.java)
@@ -43,11 +36,11 @@ class RemoteModule {
 
   @Provides
   @Singleton
-  fun provideRegistrationApi(/*okHttpClient: OkHttpClient*/): ActifyRegistrationApi {
+  fun provideRegistrationApi(okHttpClient: OkHttpClient): ActifyRegistrationApi {
     val retrofit = Retrofit.Builder()
       //todo
       .baseUrl("https://loyalty.actify.ru/")
-/*      .client(okHttpClient)*/
+      .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create())
       .build()
     return retrofit.create(ActifyRegistrationApi::class.java)

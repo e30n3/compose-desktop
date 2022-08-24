@@ -19,13 +19,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.myapp.ui.element.ActifyButton
 import com.myapp.ui.element.BalanceCard
+import com.myapp.ui.feature.main.ActionScreen
 import com.myapp.ui.feature.option.OptionViewModel
 import com.myapp.util.extention.tryToPhoneFormat
 import ru.involta.actify.domain.Result
 import ru.involta.actify.ui.element.ActifyTextField
 
 @Composable
-fun OptionScreen(viewModel: OptionViewModel) {
+fun OptionScreen(viewModel: OptionViewModel, onCardChange: (String) -> Unit, selectedScreen: (ActionScreen) -> Unit) {
   val def = 16.dp
   val stateBalance = viewModel.stateBalance.collectAsState()
   val haptic = LocalHapticFeedback.current
@@ -56,6 +57,8 @@ fun OptionScreen(viewModel: OptionViewModel) {
           focusManager.clearFocus(true)
           viewModel.balance()
         }
+        onCardChange(viewModel.card)
+        selectedScreen(ActionScreen.NOTHING)
       }, label = "Телефон либо скан карты",
       modifier = Modifier.padding(horizontal = def),
       keyboardOptions = KeyboardOptions(
@@ -65,10 +68,14 @@ fun OptionScreen(viewModel: OptionViewModel) {
       onStart = {
         viewModel.balance()
         if (viewModel.card.length >= 12) viewModel.card = ""
+        onCardChange(viewModel.card)
+        selectedScreen(ActionScreen.NOTHING)
       },
       onDone = {
         viewModel.card = viewModel.card.tryToPhoneFormat()
         viewModel.balance()
+        onCardChange(viewModel.card)
+        selectedScreen(ActionScreen.NOTHING)
       },
       visualTransformation = if (viewModel.card.length >= 12 && '+' !in viewModel.card) PasswordVisualTransformation() else VisualTransformation.None
     ) {
@@ -111,7 +118,7 @@ fun OptionScreen(viewModel: OptionViewModel) {
       modifier = Modifier.padding(horizontal = def),
       enabled = stateBalance.value.status == Result.Status.SUCCESS
     ) {
-
+      selectedScreen(ActionScreen.ACCRUE)
     }
     ActifyButton(
       text = "Списание",
@@ -119,7 +126,7 @@ fun OptionScreen(viewModel: OptionViewModel) {
       modifier = Modifier.padding(horizontal = def),
       enabled = stateBalance.value.status == Result.Status.SUCCESS
     ) {
-
+      selectedScreen(ActionScreen.DEBIT)
     }
     ActifyButton(
       text = "Доступные призы",
@@ -127,7 +134,7 @@ fun OptionScreen(viewModel: OptionViewModel) {
       modifier = Modifier.padding(horizontal = def),
       enabled = stateBalance.value.status == Result.Status.SUCCESS
     ) {
-
+      selectedScreen(ActionScreen.PRIZES)
     }
     ActifyButton(
       text = "Зарегистрировать",
@@ -135,7 +142,7 @@ fun OptionScreen(viewModel: OptionViewModel) {
       modifier = Modifier.padding(start = def, end = def, bottom = def),
       enabled = stateBalance.value.status != Result.Status.SUCCESS && stateBalance.value.status != Result.Status.LOADING
     ) {
-
+      selectedScreen(ActionScreen.REGISTRATION)
     }
   }
 

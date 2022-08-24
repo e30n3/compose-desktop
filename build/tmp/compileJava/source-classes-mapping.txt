@@ -1,5 +1,9 @@
+ru/involta/actify/ui/screen/viewmodel/AccrueViewModel_Factory.java
+ ru.involta.actify.ui.screen.viewmodel.AccrueViewModel_Factory
 com/myapp/ui/feature/drawer/activate/ActivateTerminalViewModel_Factory.java
  com.myapp.ui.feature.drawer.activate.ActivateTerminalViewModel_Factory
+com/myapp/actify/di/RemoteModule_HttpClientFactory.java
+ com.myapp.actify.di.RemoteModule_HttpClientFactory
 ru/involta/actify/data/repository/ActifyRepository_Factory.java
  ru.involta.actify.data.repository.ActifyRepository_Factory
 com/myapp/actify/di/RemoteModule_ProvideMainApiFactory.java
@@ -20,9 +24,15 @@ com/myapp/actify/di/DaggerAppComponent.java
  com.myapp.actify.di.DaggerAppComponent
  com.myapp.actify.di.DaggerAppComponent$AppComponentImpl
  com.myapp.actify.di.DaggerAppComponent$Builder
+ru/involta/actify/ui/screen/viewmodel/DebitViewModel_Factory.java
+ ru.involta.actify.ui.screen.viewmodel.DebitViewModel_Factory
 com/myapp/actify/di/RemoteModule_ProvideRegistrationApiFactory.java
  com.myapp.actify.di.RemoteModule_ProvideRegistrationApiFactory
 com/myapp/ui/feature/option/OptionViewModel_Factory.java
  com.myapp.ui.feature.option.OptionViewModel_Factory
+com/myapp/ui/feature/action/PrizesViewModel_Factory.java
+ com.myapp.ui.feature.action.PrizesViewModel_Factory
 com/myapp/ui/feature/main/MainViewModel_Factory.java
  com.myapp.ui.feature.main.MainViewModel_Factory
+ru/involta/actify/ui/screen/viewmodel/RegistrationViewModel_Factory.java
+ ru.involta.actify.ui.screen.viewmodel.RegistrationViewModel_Factory

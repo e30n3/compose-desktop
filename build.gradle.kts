@@ -54,6 +54,8 @@ dependencies {
     implementation("com.squareup.moshi:moshi:1.13.0")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.13.0")
 
+    implementation("com.squareup.okhttp:okhttp:2.7.5")
+
 //    //datepicker
 //    implementation ("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
 

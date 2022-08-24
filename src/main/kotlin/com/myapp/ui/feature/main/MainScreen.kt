@@ -2,13 +2,12 @@ package com.myapp.ui.feature.main
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -19,7 +18,6 @@ import com.myapp.ui.value.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.involta.actify.domain.Result
-import ru.involta.actify.ui.screen.main.nested.OptionScreen
 
 
 enum class ActionScreen(){
@@ -39,6 +37,7 @@ fun MainScreen(
   val scaffoldState = rememberScaffoldState()
   val coroutineScope = rememberCoroutineScope()
   val terminalState = viewModel.stateTerminals.collectAsState()
+
 
 
   LaunchedEffect(key1 = terminalState.value.status) {
@@ -134,10 +133,26 @@ fun MainScreen(
         TopAppBar(contentPadding = PaddingValues(horizontal = def)) {
           Text(text = "Действие", style = MaterialTheme.typography.h6)
         }
+        Crossfade(viewModel.currentScreen.value){
+          when(it){
+            ActionScreen.ACCRUE -> {
+              viewModel.innerViewModels.renderAccrue()
+            }
+            ActionScreen.DEBIT -> {
+              viewModel.innerViewModels.renderDebit()
+            }
+            ActionScreen.PRIZES -> {
+              viewModel.innerViewModels.renderPrizes()
+            }
+            ActionScreen.REGISTRATION -> {
+              viewModel.innerViewModels.renderRegister()
+            }
+            ActionScreen.NOTHING -> {
+
+            }
+          }
+        }
       }
     }
-
   }
-
-
 }
