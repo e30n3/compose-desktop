@@ -13,6 +13,7 @@ import com.myapp.ui.value.R;
 public final class MainScreenKt {
     
     @androidx.compose.runtime.Composable
+    @kotlin.OptIn(markerClass = {androidx.compose.animation.ExperimentalAnimationApi.class})
     public static final void MainScreen(@org.jetbrains.annotations.NotNull
     com.myapp.ui.feature.main.MainViewModel viewModel) {
     }

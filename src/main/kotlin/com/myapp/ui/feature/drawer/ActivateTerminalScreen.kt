@@ -14,20 +14,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.myapp.actify.data.Interactor
 import com.myapp.ui.element.ActifyButton
-import com.myapp.ui.feature.drawer.ActivateTerminalViewModel
 import com.myapp.util.Toast
 import ru.involta.actify.domain.Result
 import ru.involta.actify.ui.element.ActifyTextField
-import javax.inject.Inject
 
 @Composable
-fun ActivateTerminalScreen(modifier: Modifier = Modifier, onSuccess: () -> Unit) {
-
-
-  val viewModel = ActivateTerminalViewModel(TODO())
-
+fun ActivateTerminalScreen(
+  viewModel: ActivateTerminalViewModel,
+  modifier: Modifier = Modifier,
+  onSuccess: () -> Unit,
+) {
 
   val registrationState = viewModel.stateRegistration.collectAsState()
   val def = 16.dp
@@ -35,7 +32,7 @@ fun ActivateTerminalScreen(modifier: Modifier = Modifier, onSuccess: () -> Unit)
   LaunchedEffect(key1 = registrationState.value.status) {
     when (registrationState.value.status) {
       Result.Status.SUCCESS -> {
-        Toast.makeText( "Успешно активирован\n${registrationState.value.data?.name} ${registrationState.value.data?.id}")
+        Toast.makeText("Успешно активирован\n${registrationState.value.data?.name} ${registrationState.value.data?.id}")
         viewModel.clearViewModel()
         onSuccess.invoke()
       }

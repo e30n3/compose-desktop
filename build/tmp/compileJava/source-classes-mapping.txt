@@ -4,14 +4,10 @@ com/myapp/actify/di/RemoteModule_ProvideMainApiFactory.java
  com.myapp.actify.di.RemoteModule_ProvideMainApiFactory
 com/myapp/actify/data/Interactor_Factory.java
  com.myapp.actify.data.Interactor_Factory
-com/myapp/ui/feature/drawer/ActivateTerminalViewModel_Factory.java
- com.myapp.ui.feature.drawer.ActivateTerminalViewModel_Factory
-com/myapp/actify/di/RemoteModule_ProvideRegistrationApiFactory.java
- com.myapp.actify.di.RemoteModule_ProvideRegistrationApiFactory
 com/myapp/ui/feature/splash/SplashViewModel_Factory.java
  com.myapp.ui.feature.splash.SplashViewModel_Factory
-com/myapp/ui/feature/main/MainViewModel_Factory.java
- com.myapp.ui.feature.main.MainViewModel_Factory
+com/myapp/ui/feature/drawer/ReportViewModel_Factory.java
+ com.myapp.ui.feature.drawer.ReportViewModel_Factory
 com/myapp/ui/feature/splash/SplashScreenComponent_MembersInjector.java
  com.myapp.ui.feature.splash.SplashScreenComponent_MembersInjector
 com/myapp/ui/feature/main/MainScreenComponent_MembersInjector.java
@@ -20,3 +16,13 @@ com/myapp/actify/di/DaggerAppComponent.java
  com.myapp.actify.di.DaggerAppComponent
  com.myapp.actify.di.DaggerAppComponent$AppComponentImpl
  com.myapp.actify.di.DaggerAppComponent$Builder
+com/myapp/ui/feature/drawer/TerminalStatusViewModel_Factory.java
+ com.myapp.ui.feature.drawer.TerminalStatusViewModel_Factory
+com/myapp/ui/feature/main/MainViewModel_RenderDrawer_MembersInjector.java
+ com.myapp.ui.feature.main.MainViewModel_RenderDrawer_MembersInjector
+com/myapp/ui/feature/drawer/ActivateTerminalViewModel_Factory.java
+ com.myapp.ui.feature.drawer.ActivateTerminalViewModel_Factory
+com/myapp/actify/di/RemoteModule_ProvideRegistrationApiFactory.java
+ com.myapp.actify.di.RemoteModule_ProvideRegistrationApiFactory
+com/myapp/ui/feature/main/MainViewModel_Factory.java
+ com.myapp.ui.feature.main.MainViewModel_Factory

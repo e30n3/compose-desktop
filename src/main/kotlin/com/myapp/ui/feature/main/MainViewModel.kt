@@ -1,13 +1,12 @@
 package com.myapp.ui.feature.main
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import com.myapp.actify.data.Interactor
-import com.myapp.data.repo.MyRepo
+import com.myapp.actify.di.AppComponent
+import com.myapp.ui.feature.drawer.*
 import com.myapp.util.ViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,62 +19,92 @@ import ru.involta.actify.domain.entity.api.response.TerminalRegistrationResponse
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    private val interactor: Interactor,
-    // Inject your repos here...
+  private val interactor: Interactor,
+  appComponent: AppComponent,
+  // Inject your repos here...
 ) : ViewModel() {
 
-    private val _stateTerminals: MutableStateFlow<Result<TerminalRegistrationResponse>> =
-        MutableStateFlow(Result.empty())
-    val stateTerminals: StateFlow<Result<TerminalRegistrationResponse>> = _stateTerminals
-    var isAuth by mutableStateOf(false)
+  init {
+    appComponent.inject(this)
+  }
 
-    fun getTerminal() = viewModelScope.launch(Dispatchers.IO) {
-        //if (_stateRegistration.value.status == Result.Status.ERROR) delay(5000)
-        _stateTerminals.value = Result.loading()
-        delay(3000)
-        interactor.getTerminal()
-            .catch { e ->
-                println(e.stackTraceToString())
-                _stateTerminals.value =
-                    Result.error(Throwable("Ошибка: ${e.message}"))
-            }.collect { data: TerminalRegistrationResponse? ->
-                if (data != null) {
-                    isAuth = true
-                    println("SUCCESS!!!")
-                    _stateTerminals.value = Result.success(data)
-                } else {
-                    isAuth = false
-                    _stateTerminals.value =
-                        Result.error(Throwable("Ошибка"))
-                }
-            }
-    }
+  private val _stateTerminals: MutableStateFlow<Result<TerminalRegistrationResponse>> =
+    MutableStateFlow(Result.empty())
+  val stateTerminals: StateFlow<Result<TerminalRegistrationResponse>> = _stateTerminals
+  var isAuth by mutableStateOf(false)
 
-    private val _stateBalance: MutableStateFlow<Result<BalanceResponse>> =
-        MutableStateFlow(Result.empty())
-    val stateBalance: StateFlow<Result<BalanceResponse>> = _stateBalance
-    fun clearBalance() {
-        _stateBalance.value = Result.empty()
-    }
-
-    fun balance() =
-        viewModelScope.launch(Dispatchers.IO) {
-            //if (_stateSendSms.value.status == Result.Status.ERROR) delay(5000)
-            _stateBalance.value = Result.loading()
-            //delay(2000)
-            interactor.getBalance("883700040920")
-                .catch { e ->
-                    println(e.stackTraceToString())
-                    _stateBalance.value =
-                        Result.error(Throwable("Проверьте подкючение к сети интернет: ${e.message}"))
-                }.collect { data: BalanceResponse? ->
-                    println(data)
-                    if (data != null && data.isSuccess) {
-                        _stateBalance.value = Result.success(data)
-                    } else
-                        _stateBalance.value =
-                            Result.error(Throwable(data?.message ?: "Проверьте подключение к сети инернет"))
-                }
+  fun getTerminal() = viewModelScope.launch(Dispatchers.IO) {
+    //if (_stateRegistration.value.status == Result.Status.ERROR) delay(5000)
+    _stateTerminals.value = Result.loading()
+    delay(3000)
+    interactor.getTerminal()
+      .catch { e ->
+        println(e.stackTraceToString())
+        _stateTerminals.value =
+          Result.error(Throwable("Ошибка: ${e.message}"))
+      }.collect { data: TerminalRegistrationResponse? ->
+        if (data != null) {
+          isAuth = true
+          println("SUCCESS!!!")
+          _stateTerminals.value = Result.success(data)
+        } else {
+          isAuth = false
+          _stateTerminals.value =
+            Result.error(Throwable("Ошибка"))
         }
+      }
+  }
+
+  class RenderDrawer(appComponent: AppComponent) {
+
+    init {
+      appComponent.inject(this)
+    }
+
+    @Inject
+    lateinit var reportViewModel: ReportViewModel
+
+    @Inject
+    lateinit var activateViewModel: ActivateTerminalViewModel
+
+    @Inject
+    lateinit var statusViewModel: TerminalStatusViewModel
+
+    @Composable
+    fun renderReport(modifier: Modifier = Modifier) {
+      val scope = rememberCoroutineScope()
+      LaunchedEffect(reportViewModel) {
+        reportViewModel.init(scope)
+      }
+
+      ReportScreen(reportViewModel, modifier)
+    }
+
+    @Composable
+    fun renderActivate(
+      modifier: Modifier = Modifier,
+      onSuccess: () -> Unit,
+    ) {
+      val scope = rememberCoroutineScope()
+      LaunchedEffect(activateViewModel) {
+        activateViewModel.init(scope)
+      }
+      ActivateTerminalScreen(activateViewModel, modifier, onSuccess)
+    }
+
+    @Composable
+    fun renderStatus(
+      modifier: Modifier = Modifier,
+      onExit: () -> Unit
+    ): () -> Unit {
+      val scope = rememberCoroutineScope()
+      LaunchedEffect(statusViewModel) {
+        statusViewModel.init(scope)
+      }
+      return TerminalStatusScreen(modifier, statusViewModel, onExit)
+    }
+  }
+
+  val innerViewModels = RenderDrawer(appComponent)
 
 }
