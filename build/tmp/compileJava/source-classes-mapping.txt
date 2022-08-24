@@ -4,6 +4,8 @@ com/myapp/actify/di/RemoteModule_ProvideMainApiFactory.java
  com.myapp.actify.di.RemoteModule_ProvideMainApiFactory
 com/myapp/actify/data/Interactor_Factory.java
  com.myapp.actify.data.Interactor_Factory
+com/myapp/ui/feature/drawer/ActivateTerminalViewModel_Factory.java
+ com.myapp.ui.feature.drawer.ActivateTerminalViewModel_Factory
 com/myapp/actify/di/RemoteModule_ProvideRegistrationApiFactory.java
  com.myapp.actify.di.RemoteModule_ProvideRegistrationApiFactory
 com/myapp/ui/feature/splash/SplashViewModel_Factory.java

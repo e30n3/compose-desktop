@@ -15,6 +15,8 @@ class SplashScreenComponent(
     @Inject
     lateinit var splashViewModel: SplashViewModel
 
+
+
     init {
         appComponent.inject(this)
     }

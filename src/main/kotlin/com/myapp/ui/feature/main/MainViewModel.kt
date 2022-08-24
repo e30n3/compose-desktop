@@ -20,7 +20,6 @@ import ru.involta.actify.domain.entity.api.response.TerminalRegistrationResponse
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    private val myRepo: MyRepo,
     private val interactor: Interactor,
     // Inject your repos here...
 ) : ViewModel() {
@@ -78,21 +77,5 @@ class MainViewModel @Inject constructor(
                             Result.error(Throwable(data?.message ?: "Проверьте подключение к сети инернет"))
                 }
         }
-
-
-    companion object {
-        const val INIT_WELCOME_MSG = "Hello World!"
-    }
-
-    private val _welcomeText = MutableStateFlow(INIT_WELCOME_MSG)
-    val welcomeText: StateFlow<String> = _welcomeText
-
-    fun onClickMeClicked() {
-        getTerminal()
-        balance()
-        _welcomeText.value = myRepo.getClickedWelcomeText()
-    }
-
-
 
 }

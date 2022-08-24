@@ -15,4 +15,11 @@ object R {
     object string {
         const val ACTION_MAIN_CLICK_ME = "Click Me!"
     }
+
+
+    @Suppress("ClassName")
+    object drawable {
+        const val actifyLogo = "drawables/ic_logo.xml"
+    }
+
 }

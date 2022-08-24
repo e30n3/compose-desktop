@@ -9,26 +9,26 @@ import com.toxicbakery.logging.Seedling
 
 
 class App(
-    appArgs: AppArgs,
+  appArgs: AppArgs,
 ) : Application() {
 
-    companion object {
-        lateinit var appArgs: AppArgs
-    }
+  companion object {
+    lateinit var appArgs: AppArgs
+  }
 
-    init {
-        App.appArgs = appArgs
-    }
+  init {
+    App.appArgs = appArgs
+  }
 
-    override fun onCreate() {
-        super.onCreate()
-        Arbor.sow(Seedling())
+  override fun onCreate() {
+    super.onCreate()
+    Arbor.sow(Seedling())
 
-        Arbor.d("Starting app...")
+    Arbor.d("Starting app...")
 
-        val splashIntent = MainActivity.getStartIntent()
-        startActivity(splashIntent)
-    }
+    val splashIntent = MainActivity.getStartIntent()
+    startActivity(splashIntent)
+  }
 }
 
 /**
@@ -36,11 +36,11 @@ class App(
  */
 fun main() {
 
-    val appArgs = AppArgs(
-        appName = "My App", // To show on title bar
-        version = "v1.0.0", // To show on title inside brackets
-        versionCode = 100 // To compare with latest version code (in case if you want to prompt update)
-    )
+  val appArgs = AppArgs(
+    appName = "Actify", // To show on title bar
+    version = "v1.0.0", // To show on title inside brackets
+    versionCode = 100 // To compare with latest version code (in case if you want to prompt update)
+  )
 
-    App(appArgs).onCreate()
+  App(appArgs).onCreate()
 }

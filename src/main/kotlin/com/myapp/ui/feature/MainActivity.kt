@@ -16,32 +16,29 @@ import androidx.compose.ui.window.application as setContent
  * The activity who will be hosting all screens in this app
  */
 class MainActivity : Activity() {
-    companion object {
-        fun getStartIntent(): Intent {
-            return Intent(MainActivity::class).apply {
-                // data goes here
-            }
-        }
+  companion object {
+    fun getStartIntent(): Intent {
+      return Intent(MainActivity::class).apply {
+        // data goes here
+      }
     }
+  }
 
-    override fun onCreate() {
-        super.onCreate()
+  override fun onCreate() {
+    super.onCreate()
 
-        setContent {
-            Window(
-                onCloseRequest = ::exitApplication,
-                title = "${App.appArgs.appName} (${App.appArgs.version})",
-                icon = painterResource("drawables/launcher_icons/system.png"),
-                state = rememberWindowState(width = 1024.dp, height = 600.dp),
-            ) {
-                ActifyTheme {
-                    // Igniting navigation
-                    rememberRootComponent(factory = ::NavHostComponent)
-                        .render()
-                }
-            }
-
+    setContent {
+      Window(
+        onCloseRequest = ::exitApplication,
+        title = "${App.appArgs.appName} (${App.appArgs.version})",
+        icon = painterResource("drawables/launcher_icons/system.png"),
+        state = rememberWindowState(width = 1024.dp, height = 600.dp),
+      ) {
+        ActifyTheme(false) {
+          // Igniting navigation
+          rememberRootComponent(factory = ::NavHostComponent).render()
         }
-
+      }
     }
+  }
 }

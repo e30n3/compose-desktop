@@ -27,6 +27,7 @@ val daggerVersion by extra("2.43.2")
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation(compose.materialIconsExtended)
 
     // Module dependencies
     implementation(project(":data"))

@@ -1,61 +1,95 @@
 package com.myapp.ui.feature.main
 
-import androidx.compose.animation.Crossfade
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.myapp.ui.element.ActifyButton
+import androidx.compose.ui.zIndex
 import com.myapp.ui.value.R
-import ru.involta.actify.domain.Result
 
 
 @Composable
 fun MainScreen(
     viewModel: MainViewModel,
 ) {
-    val welcomeText by viewModel.welcomeText.collectAsState()
-    val getBalanceState = viewModel.stateBalance.collectAsState()
-    /*val data by viewModel.*/
+  val def = 16.dp
+  val scaffoldState = rememberScaffoldState()
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+  Row {
+    //drawer
+    Surface(
+      elevation = def,
+      modifier = Modifier.zIndex(2f).weight(1f).fillMaxHeight(),
+      color = MaterialTheme.colors.surface
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = welcomeText,
-                style = MaterialTheme.typography.h3
-            )
-            Crossfade(getBalanceState.value.status) {
-                when (it) {
-                    Result.Status.SUCCESS -> getBalanceState.value.data?.let { data ->
-                        Text("$data")
-                    }
-                    Result.Status.ERROR -> Text("Ошибка")
-                    Result.Status.LOADING -> Text("Загрузка")
-                    Result.Status.EMPTY -> Text("Пусто")
-                }
-            }
 
-            Spacer(
-                modifier = Modifier.height(10.dp)
-            )
-
-            ActifyButton(
-                onClick = {
-                    viewModel.onClickMeClicked()
-                }
-            ) {
-                Text(text = R.string.ACTION_MAIN_CLICK_ME)
-            }
-        }
     }
+    //content
+    Box(
+      modifier = Modifier.zIndex(1f).weight(1f).fillMaxHeight(),
+      contentAlignment = Alignment.Center
+    ) {
+      Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+          TopAppBar(elevation = def) {
+            Icon(
+              painterResource(R.drawable.actifyLogo),
+              contentDescription = "",
+              Modifier.padding(vertical = def / 1.1f, horizontal = def)
+            )
+          }
+        },
+        isFloatingActionButtonDocked = true,
+        floatingActionButtonPosition = FabPosition.Center,
+        bottomBar = {
+          BottomAppBar(cutoutShape = MaterialTheme.shapes.small.copy(CornerSize(percent = 50))) {
+            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
+              Row() {
+                AnimatedVisibility(
+                  visible = true/*terminalState.value.status == Result.Status.SUCCESS && backStackEntry.value?.destination?.route != MainRoutes.OPTION.route*/,
+                  enter = slideInVertically { it / 2 } + fadeIn(),
+                  exit = slideOutVertically { it / 2 } + fadeOut()
+                ) {
+                  IconButton(
+                    onClick = { /*mainNavController.popBackStack()*/ },
+                  ) {
+                    Icon(Icons.Filled.ArrowBack, "")
+                  }
+                }
+                AnimatedVisibility(
+                  visible = true/*terminalState.value.status == Result.Status.SUCCESS && backStackEntry.value?.destination?.route != MainRoutes.OPTION.route*/,
+                  enter = slideInVertically { it / 2 } + fadeIn(),
+                  exit = slideOutVertically { it / 2 } + fadeOut()
+                ) {
+                  IconButton(onClick = {
+                    /*mainNavController.navigate(MainRoutes.OPTION.route) {
+                      popUpTo(MainRoutes.OPTION.route) {
+                        inclusive = true
+                      }
+                    }*/
+                  }
+                  ) {
+                    Icon(Icons.Filled.Home, "")
+                  }
+                }
+              }
+            }
+          }
+        },
+      ) {
+
+      }
+    }
+  }
+
+
 }

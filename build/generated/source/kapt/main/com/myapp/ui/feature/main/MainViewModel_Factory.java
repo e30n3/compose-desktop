@@ -1,7 +1,6 @@
 package com.myapp.ui.feature.main;
 
 import com.myapp.actify.data.Interactor;
-import com.myapp.data.repo.MyRepo;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
 import dagger.internal.QualifierMetadata;
@@ -21,27 +20,22 @@ import javax.inject.Provider;
     "rawtypes"
 })
 public final class MainViewModel_Factory implements Factory<MainViewModel> {
-  private final Provider<MyRepo> myRepoProvider;
-
   private final Provider<Interactor> interactorProvider;
 
-  public MainViewModel_Factory(Provider<MyRepo> myRepoProvider,
-      Provider<Interactor> interactorProvider) {
-    this.myRepoProvider = myRepoProvider;
+  public MainViewModel_Factory(Provider<Interactor> interactorProvider) {
     this.interactorProvider = interactorProvider;
   }
 
   @Override
   public MainViewModel get() {
-    return newInstance(myRepoProvider.get(), interactorProvider.get());
+    return newInstance(interactorProvider.get());
   }
 
-  public static MainViewModel_Factory create(Provider<MyRepo> myRepoProvider,
-      Provider<Interactor> interactorProvider) {
-    return new MainViewModel_Factory(myRepoProvider, interactorProvider);
+  public static MainViewModel_Factory create(Provider<Interactor> interactorProvider) {
+    return new MainViewModel_Factory(interactorProvider);
   }
 
-  public static MainViewModel newInstance(MyRepo myRepo, Interactor interactor) {
-    return new MainViewModel(myRepo, interactor);
+  public static MainViewModel newInstance(Interactor interactor) {
+    return new MainViewModel(interactor);
   }
 }
