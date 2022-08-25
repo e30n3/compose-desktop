@@ -1,5 +1,6 @@
 package com.myapp.ui.feature.splash;
 
+import androidx.compose.animation.*;
 import androidx.compose.runtime.Composable;
 import androidx.compose.ui.Alignment;
 import androidx.compose.ui.Modifier;
@@ -9,6 +10,7 @@ import com.myapp.ui.value.R;
 public final class SplashScreenKt {
     
     @androidx.compose.runtime.Composable
+    @kotlin.OptIn(markerClass = {androidx.compose.animation.ExperimentalAnimationApi.class})
     public static final void SplashScreen(@org.jetbrains.annotations.NotNull
     com.myapp.ui.feature.splash.SplashViewModel viewModel) {
     }

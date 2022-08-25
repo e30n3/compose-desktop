@@ -1,5 +1,7 @@
 package com.myapp.ui.feature.splash
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,24 +16,32 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.myapp.ui.value.R
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun SplashScreen(
-    viewModel: SplashViewModel,
+  viewModel: SplashViewModel,
 ) {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colors.surface,
-        elevation = 16.dp
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Spacer(Modifier.weight(1f))
-            Icon(
-                painter = painterResource(R.drawable.actifyLogo),
-                modifier = Modifier.fillMaxSize().weight(1f),
-                contentDescription = "Logo",
-                tint = MaterialTheme.colors.primary
-            )
-            Spacer(Modifier.weight(1f))
-        }
+  Surface(
+    modifier = Modifier.fillMaxSize(),
+    color = MaterialTheme.colors.surface,
+    elevation = 16.dp
+  ) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+      Spacer(Modifier.weight(1f))
+      AnimatedVisibility(
+        visible = viewModel.isVisible,
+        modifier = Modifier.fillMaxSize().weight(1f),
+        enter = fadeIn(tween(700)) + scaleIn(tween(700)),
+        exit = fadeOut(tween(700))+ scaleOut(tween(700))
+      ) {
+        Icon(
+          painter = painterResource(R.drawable.actifyLogo),
+          modifier = Modifier.fillMaxSize().weight(1f),
+          contentDescription = "Logo",
+          tint = MaterialTheme.colors.primary
+        )
+      }
+      Spacer(Modifier.weight(1f))
     }
+  }
 }

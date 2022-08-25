@@ -101,6 +101,8 @@ compose.desktop {
             packageName = "myapp"
             packageVersion = "1.0.0"
 
+            jvmArgs("-Dapple.awt.application.appearance=system")
+
             val iconsRoot = project.file("src/main/resources/drawables")
 
             linux {

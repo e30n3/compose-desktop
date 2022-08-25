@@ -144,6 +144,7 @@ fun OptionScreen(viewModel: OptionViewModel, onCardChange: (String) -> Unit, sel
     ) {
       selectedScreen(ActionScreen.REGISTRATION)
     }
+    Spacer(modifier = Modifier.height(def).weight(1f))
   }
 
 }

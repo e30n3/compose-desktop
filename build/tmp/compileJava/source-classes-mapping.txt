@@ -14,6 +14,7 @@ com/myapp/ui/feature/drawer/report/ReportViewModel_Factory.java
  com.myapp.ui.feature.drawer.report.ReportViewModel_Factory
 com/myapp/ui/feature/splash/SplashViewModel_Factory.java
  com.myapp.ui.feature.splash.SplashViewModel_Factory
+ com.myapp.ui.feature.splash.SplashViewModel_Factory$InstanceHolder
 com/myapp/ui/feature/drawer/terminal/TerminalStatusViewModel_Factory.java
  com.myapp.ui.feature.drawer.terminal.TerminalStatusViewModel_Factory
 com/myapp/ui/feature/splash/SplashScreenComponent_MembersInjector.java

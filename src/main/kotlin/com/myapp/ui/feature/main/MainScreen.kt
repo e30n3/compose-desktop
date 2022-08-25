@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import ru.involta.actify.domain.Result
 
 
-enum class ActionScreen(){
+enum class ActionScreen() {
   ACCRUE,
   DEBIT,
   PRIZES,
@@ -44,10 +44,13 @@ fun MainScreen(
     when (terminalState.value.status) {
       Result.Status.SUCCESS -> {
       }
+
       Result.Status.ERROR -> {
       }
+
       Result.Status.LOADING -> {
       }
+
       Result.Status.EMPTY -> {
         viewModel.getTerminal()
       }
@@ -63,7 +66,13 @@ fun MainScreen(
     ) {
       Column(Modifier.fillMaxSize()) {
         TopAppBar(contentPadding = PaddingValues(horizontal = def)) {
-          Text(text = "Дополнительно", style = MaterialTheme.typography.h6)
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+          ) {
+            Text(text = "Дополнительно", style = MaterialTheme.typography.h6)
+          }
         }
         Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
           lateinit var update: () -> Unit
@@ -109,16 +118,22 @@ fun MainScreen(
       scaffoldState = scaffoldState,
       topBar = {
         TopAppBar(elevation = def) {
-          Icon(
-            painterResource(R.drawable.actifyLogo),
-            contentDescription = "",
-            Modifier.padding(vertical = def / 1.1f, horizontal = def)
-          )
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+          ) {
+            Icon(
+              painterResource(R.drawable.actifyLogo),
+              contentDescription = "",
+              Modifier.padding(vertical = def / 1.1f, horizontal = def)
+            )
+          }
         }
       },
     ) {
-      Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
-        AnimatedVisibility(viewModel.isAuth){
+      Surface(modifier = Modifier.fillMaxSize(), elevation = 8.dp) {
+        AnimatedVisibility(viewModel.isAuth) {
           viewModel.innerViewModels.renderOption()
         }
       }
@@ -131,22 +146,32 @@ fun MainScreen(
     ) {
       Column(Modifier.fillMaxSize()) {
         TopAppBar(contentPadding = PaddingValues(horizontal = def)) {
-          Text(text = "Действие", style = MaterialTheme.typography.h6)
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+          ) {
+            Text(text = "Действие", style = MaterialTheme.typography.h6)
+          }
         }
-        Crossfade(viewModel.currentScreen.value){
-          when(it){
+        Crossfade(viewModel.currentScreen.value) {
+          when (it) {
             ActionScreen.ACCRUE -> {
               viewModel.innerViewModels.renderAccrue()
             }
+
             ActionScreen.DEBIT -> {
               viewModel.innerViewModels.renderDebit()
             }
+
             ActionScreen.PRIZES -> {
               viewModel.innerViewModels.renderPrizes()
             }
+
             ActionScreen.REGISTRATION -> {
               viewModel.innerViewModels.renderRegister()
             }
+
             ActionScreen.NOTHING -> {
 
             }

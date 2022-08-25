@@ -27,7 +27,7 @@ class RemoteModule {
   @Singleton
   fun provideMainApi(okHttpClient: OkHttpClient): ActifyMainApi {
     val retrofit =  Retrofit.Builder()
-      .baseUrl("https://api.ifriend.involta.pro/")
+      .baseUrl("https://api.ifriend.devolta.ru/")
       .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create())
       .build()

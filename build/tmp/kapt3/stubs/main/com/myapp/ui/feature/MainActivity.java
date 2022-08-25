@@ -1,7 +1,11 @@
 package com.myapp.ui.feature;
 
+import androidx.compose.ui.Alignment;
+import androidx.compose.ui.Modifier;
+import androidx.compose.ui.window.WindowPlacement;
 import com.myapp.App;
 import com.myapp.ui.navigation.NavHostComponent;
+import com.myapp.util.Toast;
 import com.theapache64.cyclone.core.Activity;
 import com.theapache64.cyclone.core.Intent;
 
