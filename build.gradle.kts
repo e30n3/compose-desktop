@@ -98,7 +98,7 @@ compose.desktop {
         mainClass = "com.myapp.AppKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "myapp"
+            packageName = "Actify"
             packageVersion = "1.0.0"
 
             jvmArgs("-Dapple.awt.application.appearance=system")

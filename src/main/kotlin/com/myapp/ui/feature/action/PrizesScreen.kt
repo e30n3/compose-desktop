@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.zIndex
 import com.myapp.ui.element.ActifyButton
+import com.myapp.ui.element.ActifyDialog
 import com.myapp.util.Toast
 import com.myapp.util.extention.tryToSafeCardFormat
 import ru.involta.actify.domain.Result
@@ -34,24 +35,20 @@ import com.myapp.ui.feature.action.PrizesViewModel
 import ru.involta.actify.ui.theme.defaultFiniteAnimationSpec
 import ru.involta.actify.util.extention.shimmer
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
 @Composable
-fun PrizesScreen(cardOrPhone: String, viewModel: PrizesViewModel) {
+fun PrizesScreen(cardOrPhone: String, viewModel: PrizesViewModel, onFinish:()->Unit) {
   val def = 16.dp
   val prizesState = viewModel.statePrizes.collectAsState()
   val claimPrizeState = viewModel.stateClaimPrize.collectAsState()
 
   val isOpen = rememberSaveable { mutableStateOf(false) }
 
+
+
   LaunchedEffect(key1 = claimPrizeState.value.status) {
     if (claimPrizeState.value.status == Result.Status.SUCCESS && claimPrizeState.value.data?._status == 1) {
-      //Toast.makeText(context, "Успешная покупка", Toast.LENGTH_SHORT).show()
       isOpen.value = true
-      /*navController.navigate(MainRoutes.OPTION.route) {
-        popUpTo(MainRoutes.OPTION.route) {
-          inclusive = true
-        }
-      }*/
     }
     if (claimPrizeState.value.status == Result.Status.ERROR && claimPrizeState.value.exception?.message?.isNotBlank() == true) {
       Toast.makeText(claimPrizeState.value.exception?.message ?: "")
@@ -68,9 +65,10 @@ fun PrizesScreen(cardOrPhone: String, viewModel: PrizesViewModel) {
   }
 
 
-  Dialog(visible = isOpen.value, onCloseRequest = {
+  ActifyDialog(isOpen = isOpen.value, onClose = {
     isOpen.value = false
     if (claimPrizeState.value.status == Result.Status.SUCCESS && claimPrizeState.value.data?._status == 1) {
+      onFinish()
     }
     /*navController.navigate(MainRoutes.OPTION.route) {
       popUpTo(MainRoutes.OPTION.route) {
@@ -78,64 +76,54 @@ fun PrizesScreen(cardOrPhone: String, viewModel: PrizesViewModel) {
       }
     }*/
   }) {
-    Box(Modifier) {
-      Card(
-        backgroundColor = MaterialTheme.colors.background,
-        shape = RoundedCornerShape(def * 2),
-        modifier = Modifier
+    AnimatedContent(targetState = claimPrizeState.value.data?._status == 1) {
+      if (it) Column(
+        Modifier
+          .fillMaxWidth()
           .animateContentSize(defaultFiniteAnimationSpec)
-          .align(Alignment.Center)
+          .padding(def), horizontalAlignment = Alignment.CenterHorizontally
       ) {
-        AnimatedContent(targetState = claimPrizeState.value.data?._status == 1) {
-          if (it) Column(
-            Modifier
-              .fillMaxWidth()
-              .animateContentSize(defaultFiniteAnimationSpec)
-              .padding(def), horizontalAlignment = Alignment.CenterHorizontally
-          ) {
-            Spacer(modifier = Modifier.height(def))
-            Text(text = "Успешно выдан", style = MaterialTheme.typography.h6)
-            Spacer(modifier = Modifier.height(def / 2))
-            Text(text = "приз ${viewModel.selectedPrize?.prize}")
-            Spacer(modifier = Modifier.height(def))
-          }
-          else
-            Column(
-              Modifier
-                .fillMaxWidth()
-                .animateContentSize(defaultFiniteAnimationSpec)
-                .padding(bottom = def),
-              verticalArrangement = Arrangement.spacedBy(def)
-            ) {
-              Text(
-                text = "Введите код",
-                style = MaterialTheme.typography.h6,
-                modifier = Modifier
-                  .padding(start = def, end = def, top = def)
-                  .fillMaxWidth(),
-                textAlign = TextAlign.Center
-              )
-              ActifyTextField(
-                value = viewModel.code,
-                onValueChange = {
-                  viewModel.code = it.filter { c -> c in "1234567890" }
-                },
-                label = "Код подтверждения",
-                modifier = Modifier.padding(horizontal = def),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-              )
-              ActifyButton(
-                text = if (viewModel.code.isNotBlank()) "Подтвердить" else "Введите код выше",
-                icon = Icons.Filled.GppGood,
-                enabled = (viewModel.code.isNotBlank() && claimPrizeState.value.status != Result.Status.LOADING),
-                modifier = Modifier.padding(horizontal = def),
-                isLoading = claimPrizeState.value.status == Result.Status.LOADING
-              ) {
-                viewModel.claimPrize(cardOrPhone)
-              }
-            }
-        }
+        Spacer(modifier = Modifier.height(def))
+        Text(text = "Успешно выдан", style = MaterialTheme.typography.h6)
+        Spacer(modifier = Modifier.height(def / 2))
+        Text(text = "приз ${viewModel.selectedPrize?.prize}")
+        Spacer(modifier = Modifier.height(def))
       }
+      else
+        Column(
+          Modifier
+            .fillMaxWidth()
+            .animateContentSize(defaultFiniteAnimationSpec)
+            .padding(bottom = def),
+          verticalArrangement = Arrangement.spacedBy(def)
+        ) {
+          Text(
+            text = "Введите код",
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier
+              .padding(start = def, end = def, top = def)
+              .fillMaxWidth(),
+            textAlign = TextAlign.Center
+          )
+          ActifyTextField(
+            value = viewModel.code,
+            onValueChange = {
+              viewModel.code = it.filter { c -> c in "1234567890" }
+            },
+            label = "Код подтверждения",
+            modifier = Modifier.padding(horizontal = def),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+          )
+          ActifyButton(
+            text = if (viewModel.code.isNotBlank()) "Подтвердить" else "Введите код выше",
+            icon = Icons.Filled.GppGood,
+            enabled = (viewModel.code.isNotBlank() && claimPrizeState.value.status != Result.Status.LOADING),
+            modifier = Modifier.padding(horizontal = def),
+            isLoading = claimPrizeState.value.status == Result.Status.LOADING
+          ) {
+            viewModel.claimPrize(cardOrPhone)
+          }
+        }
     }
   }
 
@@ -245,11 +233,13 @@ fun PrizesScreen(cardOrPhone: String, viewModel: PrizesViewModel) {
           }
         }
       }
+
       Result.Status.ERROR -> {
         Box(Modifier.fillMaxSize()) {
           Text(text = "${prizesState.value.exception?.message}", Modifier.align(Alignment.Center))
         }
       }
+
       Result.Status.LOADING -> {
         Column {
           Box(
@@ -260,6 +250,7 @@ fun PrizesScreen(cardOrPhone: String, viewModel: PrizesViewModel) {
           )
         }
       }
+
       Result.Status.EMPTY -> {
         Column {
           Box(

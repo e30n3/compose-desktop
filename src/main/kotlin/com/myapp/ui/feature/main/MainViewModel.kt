@@ -94,7 +94,7 @@ class MainViewModel @Inject constructor(
     fun renderReport(modifier: Modifier = Modifier) {
       val scope = rememberCoroutineScope()
       ReportScreen(reportViewModel.apply { init(scope) }, modifier)
-      DisposableEffect(Unit){
+      DisposableEffect(Unit) {
         onDispose {
           reportViewModel = ReportViewModel(interactor)
         }
@@ -109,7 +109,7 @@ class MainViewModel @Inject constructor(
       }) {
         currentScreen.value = it
       }
-      DisposableEffect(Unit){
+      DisposableEffect(Unit) {
         onDispose {
           optionViewModel = OptionViewModel(interactor)
         }
@@ -119,8 +119,10 @@ class MainViewModel @Inject constructor(
     @Composable
     fun renderAccrue() {
       val scope = rememberCoroutineScope()
-      AccrueScreen(card, accrueViewModel.apply { init(scope) })
-      DisposableEffect(Unit){
+      AccrueScreen(card, accrueViewModel.apply { init(scope) }) {
+        currentScreen.value = ActionScreen.NOTHING
+      }
+      DisposableEffect(Unit) {
         onDispose {
           accrueViewModel = AccrueViewModel(interactor)
         }
@@ -130,8 +132,10 @@ class MainViewModel @Inject constructor(
     @Composable
     fun renderDebit() {
       val scope = rememberCoroutineScope()
-      DebitScreen(card, debitViewModel.apply { init(scope) })
-      DisposableEffect(Unit){
+      DebitScreen(card, debitViewModel.apply { init(scope) }) {
+        currentScreen.value = ActionScreen.NOTHING
+      }
+      DisposableEffect(Unit) {
         onDispose {
           debitViewModel = DebitViewModel(interactor)
         }
@@ -141,8 +145,10 @@ class MainViewModel @Inject constructor(
     @Composable
     fun renderPrizes() {
       val scope = rememberCoroutineScope()
-      PrizesScreen(card, prizesViewModel.apply { init(scope) })
-      DisposableEffect(Unit){
+      PrizesScreen(card, prizesViewModel.apply { init(scope) }) {
+        currentScreen.value = ActionScreen.NOTHING
+      }
+      DisposableEffect(Unit) {
         onDispose {
           prizesViewModel = PrizesViewModel(interactor)
         }
@@ -153,7 +159,7 @@ class MainViewModel @Inject constructor(
     fun renderRegister() {
       val scope = rememberCoroutineScope()
       RegistrationScreen(registerViewModel.apply { init(scope) }, card)
-      DisposableEffect(Unit){
+      DisposableEffect(Unit) {
         onDispose {
           registerViewModel = RegistrationViewModel(interactor)
         }
@@ -167,7 +173,7 @@ class MainViewModel @Inject constructor(
     ) {
       val scope = rememberCoroutineScope()
       ActivateTerminalScreen(activateViewModel.apply { init(scope) }, modifier, onSuccess)
-      DisposableEffect(Unit){
+      DisposableEffect(Unit) {
         onDispose {
           activateViewModel = ActivateTerminalViewModel(interactor)
         }

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.myapp.ui.element.ActifyButton
+import com.myapp.ui.element.ActifyDialog
 import com.myapp.util.Toast
 import com.myapp.util.extention.bonusWord
 import com.myapp.util.extention.isAdequate
@@ -38,7 +39,7 @@ import ru.involta.actify.util.extention.shimmer
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel) {
+fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel, onFinish: () -> Unit) {
   val def = 16.dp
   val scrollState = rememberScrollState()
   val checkState = viewModel.stateCheck.collectAsState()
@@ -48,12 +49,6 @@ fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel) {
   LaunchedEffect(key1 = debitState.value.status) {
     if (debitState.value.status == Result.Status.SUCCESS && debitState.value.data?._status == 1) {
       isOpen.value = true
-      //Toast.makeText(context, "Успешная покупка", Toast.LENGTH_SHORT).show()
-      /*navController.navigate(MainRoutes.OPTION.route) {
-        popUpTo(MainRoutes.OPTION.route) {
-          inclusive = true
-        }
-      }*/
     }
     if (debitState.value.status == Result.Status.ERROR && debitState.value.exception?.message?.isNotBlank() == true) {
       Toast.makeText(debitState.value.exception?.message ?: "")
@@ -68,14 +63,18 @@ fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel) {
       viewModel.codeVisibility = false
     }
   }
-  
+
   LaunchedEffect(key1 = checkState.value.status) {
     if (checkState.value.status == Result.Status.EMPTY)
       viewModel.debitCheck(phoneOrCard)
   }
 
 
-  Dialog(visible = isOpen.value, onCloseRequest = {
+  ActifyDialog(isOpen = isOpen.value, onClose = {
+    isOpen.value = false
+    if (debitState.value.status == Result.Status.SUCCESS && debitState.value.data?._status == 1) {
+      onFinish()
+    }
     /*isOpen.value = false
     if (debitState.value.status == Result.Status.SUCCESS && debitState.value.data?._status == 1){}*/
     /*navController.navigate(MainRoutes.OPTION.route) {
@@ -84,61 +83,51 @@ fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel) {
       }
     }*/
   }) {
-    Box(Modifier) {
-      Card(
-        backgroundColor = MaterialTheme.colors.background,
-        shape = RoundedCornerShape(def * 2),
-        modifier = Modifier
+    AnimatedContent(targetState = debitState.value.data?._status == 1) {
+      if (it) Column(
+        Modifier
+          .fillMaxWidth()
           .animateContentSize(defaultFiniteAnimationSpec)
-          .align(Alignment.Center)
+          .padding(def), horizontalAlignment = Alignment.CenterHorizontally
       ) {
-        AnimatedContent(targetState = debitState.value.data?._status == 1) {
-          if (it) Column(
-            Modifier
-              .fillMaxWidth()
-              .animateContentSize(defaultFiniteAnimationSpec)
-              .padding(def), horizontalAlignment = Alignment.CenterHorizontally
-          ) {
-            Spacer(modifier = Modifier.height(def))
-            Text(text = "Успешное списание", style = MaterialTheme.typography.h6)
-            Spacer(modifier = Modifier.height(def / 2))
-            Text(text = "Списано ${viewModel.debit} ${viewModel.debit.toDouble().bonusWord}")
-            Spacer(modifier = Modifier.height(def))
-          }
-          else Column(
-            Modifier
-              .fillMaxWidth()
-              .animateContentSize(defaultFiniteAnimationSpec)
-              .padding(bottom = def),
-            verticalArrangement = Arrangement.spacedBy(def)
-          ) {
-            Text(
-              text = "Введите код",
-              style = MaterialTheme.typography.h6,
-              modifier = Modifier
-                .padding(start = def, end = def, top = def)
-                .fillMaxWidth(),
-              textAlign = TextAlign.Center
-            )
-            ActifyTextField(
-              value = viewModel.code,
-              onValueChange = {
-                viewModel.code = it.filter { c -> c in "1234567890" }
-              },
-              label = "Код подтверждения",
-              modifier = Modifier.padding(horizontal = def),
-              keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            )
-            ActifyButton(
-              text = if (viewModel.code.isNotBlank()) "Подтвердить" else "Введите код выше",
-              icon = Icons.Filled.GppGood,
-              enabled = (viewModel.code.isNotBlank() && debitState.value.status != Result.Status.LOADING),
-              modifier = Modifier.padding(horizontal = def),
-              isLoading = debitState.value.status == Result.Status.LOADING
-            ) {
-              viewModel.debit(phoneOrCard)
-            }
-          }
+        Spacer(modifier = Modifier.height(def))
+        Text(text = "Успешное списание", style = MaterialTheme.typography.h6)
+        Spacer(modifier = Modifier.height(def / 2))
+        Text(text = "Списано ${viewModel.debit} ${viewModel.debit.toDouble().bonusWord}")
+        Spacer(modifier = Modifier.height(def))
+      }
+      else Column(
+        Modifier
+          .fillMaxWidth()
+          .animateContentSize(defaultFiniteAnimationSpec)
+          .padding(bottom = def),
+        verticalArrangement = Arrangement.spacedBy(def)
+      ) {
+        Text(
+          text = "Введите код",
+          style = MaterialTheme.typography.h6,
+          modifier = Modifier
+            .padding(start = def, end = def, top = def)
+            .fillMaxWidth(),
+          textAlign = TextAlign.Center
+        )
+        ActifyTextField(
+          value = viewModel.code,
+          onValueChange = {
+            viewModel.code = it.filter { c -> c in "1234567890" }
+          },
+          label = "Код подтверждения",
+          modifier = Modifier.padding(horizontal = def),
+          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+        ActifyButton(
+          text = if (viewModel.code.isNotBlank()) "Подтвердить" else "Введите код выше",
+          icon = Icons.Filled.GppGood,
+          enabled = (viewModel.code.isNotBlank() && debitState.value.status != Result.Status.LOADING),
+          modifier = Modifier.padding(horizontal = def),
+          isLoading = debitState.value.status == Result.Status.LOADING
+        ) {
+          viewModel.debit(phoneOrCard)
         }
       }
     }
@@ -174,7 +163,10 @@ fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel) {
     ActifyTextField(
       value = viewModel.amount,
       onValueChange = {
-        viewModel.amount = it.filter { c -> c in "1234567890." }.substring(0, it.length.coerceAtMost(7))
+        viewModel.amount =
+          it.filter { c -> c in "1234567890." }.runCatching {
+            substring(0, it.length.coerceAtMost(7))
+          }.getOrNull() ?: ""
       },
       label = "Сумма покупки",
       modifier = Modifier.padding(horizontal = def),
@@ -187,7 +179,9 @@ fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel) {
     ActifyTextField(
       value = viewModel.debit,
       onValueChange = {
-        viewModel.debit = it.filter { c -> c in "1234567890." }.substring(0, it.length.coerceAtMost(7))
+        viewModel.debit = it.filter { c -> c in "1234567890." }.runCatching {
+          substring(0, it.length.coerceAtMost(7))
+        }.getOrNull() ?: ""
       },
       label = "Можно списать",
       modifier = Modifier.padding(horizontal = def),

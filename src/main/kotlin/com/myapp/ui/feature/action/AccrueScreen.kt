@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.myapp.ui.element.ActifyButton
+import com.myapp.ui.element.ActifyDialog
 import com.myapp.ui.element.BalanceCard
 import com.myapp.util.Toast
 import com.myapp.util.extention.prettyString
@@ -35,47 +36,43 @@ import ru.involta.actify.ui.screen.viewmodel.AccrueViewModel
 import ru.involta.actify.ui.theme.defaultFiniteAnimationSpec
 
 @Composable
-fun AccrueScreen(phoneOrCard: String, viewModel: AccrueViewModel) {
+fun AccrueScreen(phoneOrCard: String, viewModel: AccrueViewModel, onFinish:()->Unit) {
   val def = 16.dp
   val scrollState = rememberScrollState()
   val accrueState = viewModel.stateAccrue.collectAsState()
   val isOpen = rememberSaveable { mutableStateOf(false) }
 
 
-  Dialog(visible = isOpen.value, onCloseRequest = {
-
-  }) {
-    Card(
-      backgroundColor = MaterialTheme.colors.background,
-      shape = RoundedCornerShape(def * 2)
-    ) {
-      Column() {
-        Spacer(modifier = Modifier.height(def))
-        Text(
-          text = "Успешное начисление",
-          style = MaterialTheme.typography.h6,
-          modifier = Modifier
-            .padding(horizontal = def)
-            .fillMaxWidth(),
-          textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.height(def / 2))
-        Text(
-          text = "на сумму ${viewModel.amount.toDoubleOrNull()?.prettyString} ${viewModel.amount.toDoubleOrNull()?.rubleWord}",
-          modifier = Modifier
-            .padding(horizontal = def)
-            .fillMaxWidth(),
-          textAlign = TextAlign.Center
-        )
-        BalanceCard(
-          response = accrueState.value,
-          Modifier
-            .fillMaxWidth()
-            .padding(def),
-          true
-        )
-      }
+  ActifyDialog(isOpen = isOpen.value, onClose = {
+    isOpen.value = false
+    if (accrueState.value.status == Result.Status.SUCCESS && accrueState.value.data?._status == 1) {
+      onFinish()
     }
+  }) {
+    Spacer(modifier = Modifier.height(def))
+    Text(
+      text = "Успешное начисление",
+      style = MaterialTheme.typography.h6,
+      modifier = Modifier
+        .padding(horizontal = def)
+        .fillMaxWidth(),
+      textAlign = TextAlign.Center
+    )
+    Spacer(modifier = Modifier.height(def / 2))
+    Text(
+      text = "на сумму ${viewModel.amount.toDoubleOrNull()?.prettyString} ${viewModel.amount.toDoubleOrNull()?.rubleWord}",
+      modifier = Modifier
+        .padding(horizontal = def)
+        .fillMaxWidth(),
+      textAlign = TextAlign.Center
+    )
+    BalanceCard(
+      response = accrueState.value,
+      Modifier
+        .fillMaxWidth()
+        .padding(def),
+      true
+    )
   }
 
 
@@ -89,10 +86,12 @@ fun AccrueScreen(phoneOrCard: String, viewModel: AccrueViewModel) {
           popUpToTop(navController)
         }*/
       }
+
       Result.Status.ERROR -> {
         Toast.makeText("${accrueState.value.exception!!.message}")
         //viewModel.clearRegistration()
       }
+
       Result.Status.LOADING -> {}
       Result.Status.EMPTY -> {}
     }
@@ -115,7 +114,9 @@ fun AccrueScreen(phoneOrCard: String, viewModel: AccrueViewModel) {
     ActifyTextField(
       value = viewModel.amount,
       onValueChange = {
-        viewModel.amount = it.filter { c -> c in "1234567890." }.substring(0, it.length.coerceAtMost(7))
+        viewModel.amount = it.filter { c -> c in "1234567890." }.runCatching {
+          substring(0, it.length.coerceAtMost(7))
+        }.getOrNull() ?: ""
       },
       label = "Сумма покупки",
       modifier = Modifier.padding(horizontal = def),

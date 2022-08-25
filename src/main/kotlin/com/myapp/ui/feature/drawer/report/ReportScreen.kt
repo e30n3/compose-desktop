@@ -11,13 +11,17 @@ import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.myapp.ui.element.DatePicker
+import com.myapp.util.extention.getCurrentDate
 import com.myapp.util.extention.prettyString
 import ru.involta.actify.domain.Result
 import ru.involta.actify.domain.entity.api.response.ReportBody
@@ -27,43 +31,43 @@ import ru.involta.actify.util.extention.shimmer
 fun ReportScreen(viewModel: ReportViewModel, modifier: Modifier = Modifier) {
   val def = remember { 16.dp }
   val reportState = viewModel.stateReport.collectAsState()
-/*  val dialogState = rememberMaterialDialogState()
+  /*  val dialogState = rememberMaterialDialogState()
 
 
-  val selectedDateLowApi = rememberSaveable { mutableStateOf( getCurrentDate() ) }
-  val dialogLowApi = DatePickerDialog(
-    LocalContext.current,
-    0,
-    { _, year, month, dayOfMonth ->
-      selectedDateLowApi.value = "$year-${month + 1}-$dayOfMonth"
-      viewModel.report(selectedDateLowApi.value)
-    },
-    selectedDateLowApi.value.split('-').component1().toInt(),
-    selectedDateLowApi.value.split('-').component2().toInt() - 1,
-    selectedDateLowApi.value.split('-').component3().toInt(),
-  )
-
-  if (Constant.isApiForLocalDate) {
-    val selectedData = remember { mutableStateOf(LocalDate.now()) }
-    MaterialDialog(
-      dialogState = dialogState,
-      buttons = {
-        positiveButton("Ok")
-        negativeButton("Cancel")
+    val selectedDateLowApi = rememberSaveable { mutableStateOf( getCurrentDate() ) }
+    val dialogLowApi = DatePickerDialog(
+      LocalContext.current,
+      0,
+      { _, year, month, dayOfMonth ->
+        selectedDateLowApi.value = "$year-${month + 1}-$dayOfMonth"
+        viewModel.report(selectedDateLowApi.value)
       },
-      shape = remember { AbsoluteSmoothCornerShape(def * 2, 100) }
-    ) {
-      datepicker(
-        selectedData.value,
-        "Выберите дату",
-        yearRange = IntRange(2000, LocalDate.now().year),
-      ) { date ->
-        selectedData.value = date
-        viewModel.report(selectedData.value.asApiFormat)
-        // Do stuff with java.time.LocalDate object which is passed in
+      selectedDateLowApi.value.split('-').component1().toInt(),
+      selectedDateLowApi.value.split('-').component2().toInt() - 1,
+      selectedDateLowApi.value.split('-').component3().toInt(),
+    )
+
+    if (Constant.isApiForLocalDate) {
+      val selectedData = remember { mutableStateOf(LocalDate.now()) }
+      MaterialDialog(
+        dialogState = dialogState,
+        buttons = {
+          positiveButton("Ok")
+          negativeButton("Cancel")
+        },
+        shape = remember { AbsoluteSmoothCornerShape(def * 2, 100) }
+      ) {
+        datepicker(
+          selectedData.value,
+          "Выберите дату",
+          yearRange = IntRange(2000, LocalDate.now().year),
+        ) { date ->
+          selectedData.value = date
+          viewModel.report(selectedData.value.asApiFormat)
+          // Do stuff with java.time.LocalDate object which is passed in
+        }
       }
-    }
-  }*/
+    }*/
 
 
   Column() {
@@ -80,7 +84,13 @@ fun ReportScreen(viewModel: ReportViewModel, modifier: Modifier = Modifier) {
           IconButton(onClick = { viewModel.report() }) {
             Icon(imageVector = Icons.Filled.Refresh, contentDescription = "")
           }
-          IconButton(onClick = { /*if (Constant.isApiForLocalDate) dialogState.show() else dialogLowApi.show()*/ }) {
+          val selectedDate = rememberSaveable { mutableStateOf(getCurrentDate()) }
+          val isOpen = rememberSaveable { mutableStateOf(false) }
+          DatePicker(isOpen.value, { isOpen.value = false }, selectedDate.value) {
+            selectedDate.value = it
+            viewModel.report(selectedDate.value)
+          }
+          IconButton(onClick = { isOpen.value = true }) {
             Icon(imageVector = Icons.Filled.EditCalendar, contentDescription = "")
           }
         }
@@ -99,9 +109,11 @@ fun ReportScreen(viewModel: ReportViewModel, modifier: Modifier = Modifier) {
               }
             }
         }
+
         Result.Status.ERROR -> {
           Text(text = reportState.value.exception?.message ?: "")
         }
+
         Result.Status.LOADING -> {
           Box(
             modifier = Modifier
@@ -109,6 +121,7 @@ fun ReportScreen(viewModel: ReportViewModel, modifier: Modifier = Modifier) {
               .shimmer(true)
           )
         }
+
         Result.Status.EMPTY -> {
           viewModel.report()
         }
