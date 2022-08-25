@@ -19,7 +19,7 @@ class RemoteModule {
   @Singleton
   fun httpClient(): OkHttpClient =
     OkHttpClient.Builder()
-      .connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build()
+      .connectTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS).build()
 
 
 
@@ -27,7 +27,7 @@ class RemoteModule {
   @Singleton
   fun provideMainApi(okHttpClient: OkHttpClient): ActifyMainApi {
     val retrofit =  Retrofit.Builder()
-      .baseUrl("https://api.ifriend.devolta.ru/")
+      .baseUrl("https://api.ifriend.involta.pro/")
       .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create())
       .build()

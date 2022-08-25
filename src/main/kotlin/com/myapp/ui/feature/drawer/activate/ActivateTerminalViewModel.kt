@@ -39,6 +39,7 @@ class ActivateTerminalViewModel @Inject constructor(
 
   fun registration() =
     viewModelScope.launch(Dispatchers.IO) {
+      println("Start")
       //if (_stateRegistration.value.status == Result.Status.ERROR) delay(5000)
       _stateRegistration.value = Result.loading()
       //delay(2000)

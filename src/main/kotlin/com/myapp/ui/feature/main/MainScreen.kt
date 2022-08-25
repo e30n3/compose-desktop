@@ -101,7 +101,6 @@ fun MainScreen(
               viewModel.innerViewModels.renderActivate(Modifier.align(Alignment.BottomCenter)) {
                 update.invoke()
                 viewModel.getTerminal()
-                coroutineScope.launch { scaffoldState.drawerState.close() }
                 /*mainNavController.navigate(MainRoutes.OPTION.route) {
                   popUpToTop(mainNavController)
                 }*/

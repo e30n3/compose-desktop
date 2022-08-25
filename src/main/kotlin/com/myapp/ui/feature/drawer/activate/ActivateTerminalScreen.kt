@@ -67,6 +67,7 @@ fun ActivateTerminalScreen(
       enabled = registrationState.value.status != Result.Status.LOADING,
       isLoading = registrationState.value.status == Result.Status.LOADING
     ) {
+      println("Click")
       viewModel.registration()
     }
   }

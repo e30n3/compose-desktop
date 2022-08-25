@@ -37,7 +37,7 @@ object Toast {
       undecorated = true,
       resizable = false
     ) {
-      LaunchedEffect(isOpen) {
+      LaunchedEffect(key1=isOpen) {
         if (isOpen) {
           closeDelay = 1f
           while (closeDelay > 0f) {
