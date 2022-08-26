@@ -1,10 +1,7 @@
 package ru.involta.actify.ui.screen.main.nested
 
 import androidx.compose.animation.*
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -105,11 +102,13 @@ fun RegistrationScreen(viewModel: RegistrationViewModel, phone: String) {
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.spacedBy(16.dp)/*, modifier = Modifier.animateContentSize()*/
   ) {
+    Spacer(modifier = Modifier.height(def).weight(1f))
     Text(
       text = "Регистрация нового участника",
       Modifier.padding(horizontal = def),
       style = MaterialTheme.typography.h6,
     )
+    Spacer(modifier = Modifier.height(def).weight(1f))
     ActifyTextField(
       modifier = Modifier.padding(horizontal = def),
       value = viewModel.phone,
@@ -187,5 +186,6 @@ fun RegistrationScreen(viewModel: RegistrationViewModel, phone: String) {
         }
       }
     }
+    Spacer(modifier = Modifier.height(def).weight(1f))
   }
 }

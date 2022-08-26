@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -41,7 +42,6 @@ import ru.involta.actify.util.extention.shimmer
 @Composable
 fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel, onFinish: () -> Unit) {
   val def = 16.dp
-  val scrollState = rememberScrollState()
   val checkState = viewModel.stateCheck.collectAsState()
   val debitState = viewModel.stateDebit.collectAsState()
   val isOpen = rememberSaveable { mutableStateOf(false) }
@@ -137,9 +137,8 @@ fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel, onFinish: () -> 
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = Modifier
-      .animateContentSize(defaultFiniteAnimationSpec)
-      .verticalScroll(scrollState)
   ) {
+    Spacer(modifier = Modifier.height(def).weight(1f))
     Text(
       text = "Списание",
       style = MaterialTheme.typography.h6,
@@ -152,14 +151,14 @@ fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel, onFinish: () -> 
       Text(text = "Доступно ")
       Text(
         text = checkState.value.data?.amount?.value?.prettyString ?: viewModel.lastCheckValue,
-        Modifier.shimmer(checkState.value.status != Result.Status.SUCCESS)
+        Modifier.shimmer(checkState.value.status != Result.Status.SUCCESS,RoundedCornerShape(4.dp))
       )
       Text(
         text = " " + (checkState.value.data?.amount?.value?.bonusWord
           ?: (viewModel.lastCheckValue.toDoubleOrNull() ?: 0.0).bonusWord)
       )
     }
-    Spacer(modifier = Modifier.height(def))
+    Spacer(modifier = Modifier.height(def).weight(1f))
     ActifyTextField(
       value = viewModel.amount,
       onValueChange = {
@@ -235,6 +234,7 @@ fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel, onFinish: () -> 
     ) {
       viewModel.debit(phoneOrCard)
     }
+    Spacer(modifier = Modifier.height(def).weight(1f))
   }
 }
 

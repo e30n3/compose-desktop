@@ -21,56 +21,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.myapp.ui.element.DatePicker
+import com.myapp.util.ShimmerBrush
 import com.myapp.util.extention.getCurrentDate
 import com.myapp.util.extention.prettyString
 import ru.involta.actify.domain.Result
+import ru.involta.actify.domain.entity.api.response.OperationBody
 import ru.involta.actify.domain.entity.api.response.ReportBody
+import ru.involta.actify.domain.entity.api.response.TotalAmountBody
+import ru.involta.actify.domain.entity.api.response.TotalBonusBody
 import ru.involta.actify.util.extention.shimmer
 
 @Composable
 fun ReportScreen(viewModel: ReportViewModel, modifier: Modifier = Modifier) {
   val def = remember { 16.dp }
   val reportState = viewModel.stateReport.collectAsState()
-  /*  val dialogState = rememberMaterialDialogState()
 
-
-    val selectedDateLowApi = rememberSaveable { mutableStateOf( getCurrentDate() ) }
-    val dialogLowApi = DatePickerDialog(
-      LocalContext.current,
-      0,
-      { _, year, month, dayOfMonth ->
-        selectedDateLowApi.value = "$year-${month + 1}-$dayOfMonth"
-        viewModel.report(selectedDateLowApi.value)
-      },
-      selectedDateLowApi.value.split('-').component1().toInt(),
-      selectedDateLowApi.value.split('-').component2().toInt() - 1,
-      selectedDateLowApi.value.split('-').component3().toInt(),
-    )
-
-    if (Constant.isApiForLocalDate) {
-      val selectedData = remember { mutableStateOf(LocalDate.now()) }
-      MaterialDialog(
-        dialogState = dialogState,
-        buttons = {
-          positiveButton("Ok")
-          negativeButton("Cancel")
-        },
-        shape = remember { AbsoluteSmoothCornerShape(def * 2, 100) }
-      ) {
-        datepicker(
-          selectedData.value,
-          "Выберите дату",
-          yearRange = IntRange(2000, LocalDate.now().year),
-        ) { date ->
-          selectedData.value = date
-          viewModel.report(selectedData.value.asApiFormat)
-          // Do stuff with java.time.LocalDate object which is passed in
-        }
-      }
-    }*/
-
-
-  Column() {
+  Column(Modifier.fillMaxSize()) {
     Surface(color = MaterialTheme.colors.secondary) {
       Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -97,7 +63,7 @@ fun ReportScreen(viewModel: ReportViewModel, modifier: Modifier = Modifier) {
       }
     }
 
-    Crossfade(targetState = reportState.value.status) {
+    Crossfade(targetState = reportState.value.status, modifier = Modifier.fillMaxSize()) {
       when (it) {
         Result.Status.SUCCESS -> reportState.value.data?.let { data ->
           if (data.isEmpty())
@@ -111,15 +77,26 @@ fun ReportScreen(viewModel: ReportViewModel, modifier: Modifier = Modifier) {
         }
 
         Result.Status.ERROR -> {
-          Text(text = reportState.value.exception?.message ?: "")
+          Text(text = reportState.value.exception?.message ?: "", Modifier.padding(def))
         }
 
         Result.Status.LOADING -> {
-          Box(
+
+          LazyColumn(modifier) {
+            items(100) {
+              ReportItemShimmer()
+            }
+          }
+
+         /* Text(
+            "4234",
             modifier = Modifier
-              .fillMaxSize()
-              .shimmer(true)
-          )
+              .shimmer()
+              .fillMaxWidth()
+              .height(500.dp)
+              .shimmer(),
+            textAlign = TextAlign.Center
+          )*/
         }
 
         Result.Status.EMPTY -> {
@@ -128,6 +105,73 @@ fun ReportScreen(viewModel: ReportViewModel, modifier: Modifier = Modifier) {
       }
     }
   }
+}
+
+@Composable
+fun ReportItemShimmer() {
+  val r = ReportBody(
+    0,
+    "",
+    0,
+    "",
+    "",
+    false,
+    false,
+    TotalBonusBody(0.0),
+    TotalAmountBody(0.0),
+    listOf(OperationBody("", 0, 0.0, false, null, null), OperationBody("", 0, 0.0, false, null, null))
+  )
+  Column {
+    Column(
+      Modifier
+        .fillMaxWidth()
+        .padding(16.dp)
+        .shimmer()
+    ) {
+      Column() {
+        Text(
+          text = "",
+          style = MaterialTheme.typography.h5,
+          modifier = Modifier.fillMaxWidth(),
+          textAlign = TextAlign.Center
+        )
+        Text(
+          text = "",
+          modifier = Modifier.fillMaxWidth(),
+          textAlign = TextAlign.Center,
+          fontSize = 14.sp,
+          fontWeight = FontWeight.Light
+        )
+      }
+      Spacer(modifier = Modifier.height(8.dp))
+      Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+        Text(text = "")
+        Text(text = "")
+      }
+      Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+        Text(text = "")
+        Text(text = "")
+      }
+      Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+        Text(text = "")
+        Text(text = "")
+      }
+      Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+        Text(text = "")
+        Text(text = "")
+      }
+      Spacer(modifier = Modifier.height(8.dp))
+      Text(text = "", style = MaterialTheme.typography.h5)
+      r.operations.forEach {
+        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+          Text(text = "")
+          Text(text = "")
+        }
+      }
+    }
+    Divider()
+  }
+
 }
 
 @Composable

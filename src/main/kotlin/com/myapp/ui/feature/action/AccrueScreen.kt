@@ -1,13 +1,9 @@
-package ru.involta.actify.ui.screen.main.nested
+package com.myapp.ui.feature.action
 
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -22,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.myapp.ui.element.ActifyButton
 import com.myapp.ui.element.ActifyDialog
 import com.myapp.ui.element.BalanceCard
@@ -38,7 +33,6 @@ import ru.involta.actify.ui.theme.defaultFiniteAnimationSpec
 @Composable
 fun AccrueScreen(phoneOrCard: String, viewModel: AccrueViewModel, onFinish:()->Unit) {
   val def = 16.dp
-  val scrollState = rememberScrollState()
   val accrueState = viewModel.stateAccrue.collectAsState()
   val isOpen = rememberSaveable { mutableStateOf(false) }
 
@@ -100,9 +94,8 @@ fun AccrueScreen(phoneOrCard: String, viewModel: AccrueViewModel, onFinish:()->U
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = Modifier
-      .animateContentSize(defaultFiniteAnimationSpec)
-      .verticalScroll(scrollState)
   ) {
+    Spacer(modifier = Modifier.height(def).weight(1f))
     Text(
       text = "Начисление",
       style = MaterialTheme.typography.h6,
@@ -110,7 +103,7 @@ fun AccrueScreen(phoneOrCard: String, viewModel: AccrueViewModel, onFinish:()->U
     )
     Spacer(modifier = Modifier.height(def / 2))
     Text(text = "Карта: ${phoneOrCard.tryToSafeCardFormat()}", modifier = Modifier.padding(horizontal = def))
-    Spacer(modifier = Modifier.height(def))
+    Spacer(modifier = Modifier.height(def).weight(1f))
     ActifyTextField(
       value = viewModel.amount,
       onValueChange = {
@@ -135,5 +128,6 @@ fun AccrueScreen(phoneOrCard: String, viewModel: AccrueViewModel, onFinish:()->U
     ) {
       viewModel.accrue(phoneOrCard)
     }
+    Spacer(modifier = Modifier.height(def).weight(1f))
   }
 }

@@ -5,6 +5,7 @@ import com.myapp.actify.data.Interactor
 import com.myapp.util.ViewModel
 import com.myapp.util.extention.getCurrentDate
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -31,7 +32,6 @@ class ReportViewModel @Inject constructor(
     viewModelScope.launch(Dispatchers.IO) {
       //if (_stateRegistration.value.status == Result.Status.ERROR) delay(5000)
       _stateReport.value = Result.loading()
-      //delay(2000)
       interactor.report(date)
         .catch { e ->
           println(e.stackTraceToString())

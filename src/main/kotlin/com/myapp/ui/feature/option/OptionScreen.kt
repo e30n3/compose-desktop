@@ -1,4 +1,4 @@
-package ru.involta.actify.ui.screen.main.nested
+package com.myapp.ui.feature.option
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
@@ -8,6 +8,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.myapp.ui.element.ActifyButton
 import com.myapp.ui.element.BalanceCard
 import com.myapp.ui.feature.main.ActionScreen
-import com.myapp.ui.feature.option.OptionViewModel
 import com.myapp.util.extention.tryToPhoneFormat
 import ru.involta.actify.domain.Result
 import ru.involta.actify.ui.element.ActifyTextField
@@ -30,6 +30,10 @@ fun OptionScreen(viewModel: OptionViewModel, onCardChange: (String) -> Unit, sel
   val def = 16.dp
   val stateBalance = viewModel.stateBalance.collectAsState()
   val haptic = LocalHapticFeedback.current
+
+  LaunchedEffect(viewModel.card){
+    selectedScreen(ActionScreen.NOTHING)
+  }
 
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
@@ -77,6 +81,9 @@ fun OptionScreen(viewModel: OptionViewModel, onCardChange: (String) -> Unit, sel
         onCardChange(viewModel.card)
         selectedScreen(ActionScreen.NOTHING)
       },
+      onFocus = {
+        selectedScreen(ActionScreen.NOTHING)
+      },
       visualTransformation = if (viewModel.card.length >= 12 && '+' !in viewModel.card) PasswordVisualTransformation() else VisualTransformation.None
     ) {
       AnimatedVisibility(
@@ -88,6 +95,7 @@ fun OptionScreen(viewModel: OptionViewModel, onCardChange: (String) -> Unit, sel
           focusManager.clearFocus(true)
           viewModel.card = ""
           viewModel.clearBalance()
+          selectedScreen(ActionScreen.NOTHING)
         }) {
           Icon(imageVector = Icons.Filled.Clear, contentDescription = "")
         }

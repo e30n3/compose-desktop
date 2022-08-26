@@ -43,15 +43,12 @@ fun BalanceCard(response: Result<BalanceResponse>, modifier: Modifier = Modifier
               Column {
                 /*BalanceRow(left = "Баланс карты", right = data.basic.prettyString, forAccrual)*/
                 if (!forAccrual) BalanceRow(left = "Всего бонусов", right = data.total.prettyString)
-                else BalanceRow(
-                  left = "Всего бонусов",
-                  right = (data.basic + data.company).prettyString,
-                  forAccrual
-                )
+                else BalanceRow(left = "Всего бонусов", right = (data.basic + data.company).prettyString, true)
                 BalanceRow(left = "Универсальных бонусов", right = data.basic.prettyString, forAccrual)
                 BalanceRow(left = "Фирменных бонусов", right = data.company.prettyString, forAccrual)
               }
             }
+
             Result.Status.ERROR -> {
               Box(Modifier.fillMaxSize()) {
                 Text(
@@ -61,8 +58,10 @@ fun BalanceCard(response: Result<BalanceResponse>, modifier: Modifier = Modifier
                 )
               }
             }
+
             Result.Status.LOADING -> {
             }
+
             Result.Status.EMPTY -> {
               Box(Modifier.fillMaxSize()) {
                 Text(

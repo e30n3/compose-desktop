@@ -37,7 +37,7 @@ import ru.involta.actify.util.extention.shimmer
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
 @Composable
-fun PrizesScreen(cardOrPhone: String, viewModel: PrizesViewModel, onFinish:()->Unit) {
+fun PrizesScreen(cardOrPhone: String, viewModel: PrizesViewModel, onFinish: () -> Unit) {
   val def = 16.dp
   val prizesState = viewModel.statePrizes.collectAsState()
   val claimPrizeState = viewModel.stateClaimPrize.collectAsState()
@@ -240,16 +240,19 @@ fun PrizesScreen(cardOrPhone: String, viewModel: PrizesViewModel, onFinish:()->U
         }
       }
 
-      Result.Status.LOADING -> {
-        Column {
-          Box(
-            modifier = Modifier
-              .fillMaxSize()
-              .shimmer()
-
-          )
+      Result.Status.LOADING ->
+        LazyColumn() {
+          items(100) {
+            Row(
+              verticalAlignment = Alignment.CenterVertically, modifier = Modifier.shimmer()
+            ) {
+              ListItem(
+                secondaryText = { Text(text = "") },
+              ) { Text(text = "") }
+            }
+            Divider(Modifier)
+          }
         }
-      }
 
       Result.Status.EMPTY -> {
         Column {

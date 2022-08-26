@@ -29,6 +29,7 @@ fun ActifyTextField(
   visualTransformation: VisualTransformation = VisualTransformation.None,
   onStart: () -> Unit = {},
   onDone: () -> Unit = {},
+  onFocus: () -> Unit = {},
   trailingIcon: @Composable (() -> Unit)? = null,
 ) {
   val keyboard = LocalSoftwareKeyboardController.current
@@ -39,6 +40,7 @@ fun ActifyTextField(
       .fillMaxWidth()
       .clearFocusOnKeyboardDismiss()
       .onFocusChanged {
+        onFocus.invoke()
         if (it.isFocused) {
           // focused
           if (value.isNotBlank()) onStart.invoke()
