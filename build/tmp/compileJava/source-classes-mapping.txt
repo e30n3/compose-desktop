@@ -1,15 +1,15 @@
-ru/involta/actify/ui/screen/viewmodel/AccrueViewModel_Factory.java
- ru.involta.actify.ui.screen.viewmodel.AccrueViewModel_Factory
 com/myapp/ui/feature/drawer/activate/ActivateTerminalViewModel_Factory.java
  com.myapp.ui.feature.drawer.activate.ActivateTerminalViewModel_Factory
+ru/involta/actify/ui/screen/viewmodel/AccrueViewModel_Factory.java
+ ru.involta.actify.ui.screen.viewmodel.AccrueViewModel_Factory
 com/myapp/actify/di/RemoteModule_HttpClientFactory.java
  com.myapp.actify.di.RemoteModule_HttpClientFactory
-ru/involta/actify/data/repository/ActifyRepository_Factory.java
- ru.involta.actify.data.repository.ActifyRepository_Factory
-com/myapp/actify/di/RemoteModule_ProvideMainApiFactory.java
- com.myapp.actify.di.RemoteModule_ProvideMainApiFactory
 com/myapp/actify/data/Interactor_Factory.java
  com.myapp.actify.data.Interactor_Factory
+com/myapp/actify/di/RemoteModule_ProvideMainApiFactory.java
+ com.myapp.actify.di.RemoteModule_ProvideMainApiFactory
+ru/involta/actify/data/repository/ActifyRepository_Factory.java
+ ru.involta.actify.data.repository.ActifyRepository_Factory
 com/myapp/ui/feature/drawer/report/ReportViewModel_Factory.java
  com.myapp.ui.feature.drawer.report.ReportViewModel_Factory
 com/myapp/ui/feature/splash/SplashViewModel_Factory.java
@@ -19,16 +19,16 @@ com/myapp/ui/feature/drawer/terminal/TerminalStatusViewModel_Factory.java
  com.myapp.ui.feature.drawer.terminal.TerminalStatusViewModel_Factory
 com/myapp/ui/feature/splash/SplashScreenComponent_MembersInjector.java
  com.myapp.ui.feature.splash.SplashScreenComponent_MembersInjector
-com/myapp/ui/feature/main/MainScreenComponent_MembersInjector.java
- com.myapp.ui.feature.main.MainScreenComponent_MembersInjector
 com/myapp/actify/di/DaggerAppComponent.java
  com.myapp.actify.di.DaggerAppComponent
  com.myapp.actify.di.DaggerAppComponent$AppComponentImpl
  com.myapp.actify.di.DaggerAppComponent$Builder
-ru/involta/actify/ui/screen/viewmodel/DebitViewModel_Factory.java
- ru.involta.actify.ui.screen.viewmodel.DebitViewModel_Factory
+com/myapp/ui/feature/main/MainScreenComponent_MembersInjector.java
+ com.myapp.ui.feature.main.MainScreenComponent_MembersInjector
 com/myapp/actify/di/RemoteModule_ProvideRegistrationApiFactory.java
  com.myapp.actify.di.RemoteModule_ProvideRegistrationApiFactory
+ru/involta/actify/ui/screen/viewmodel/DebitViewModel_Factory.java
+ ru.involta.actify.ui.screen.viewmodel.DebitViewModel_Factory
 com/myapp/ui/feature/option/OptionViewModel_Factory.java
  com.myapp.ui.feature.option.OptionViewModel_Factory
 com/myapp/ui/feature/action/PrizesViewModel_Factory.java

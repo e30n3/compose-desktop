@@ -118,6 +118,7 @@ compose.desktop {
       windows {
         iconFile.set(iconsRoot.resolve("launcher_icons/windows.ico"))
         dirChooser = true
+
       }
 
       macOS {

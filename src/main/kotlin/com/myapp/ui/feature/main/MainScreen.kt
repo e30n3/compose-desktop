@@ -153,26 +153,28 @@ fun MainScreen(
             Text(text = "Действие", style = MaterialTheme.typography.h6)
           }
         }
-        Crossfade(viewModel.currentScreen.value) {
-          when (it) {
-            ActionScreen.ACCRUE -> {
-              viewModel.innerViewModels.renderAccrue()
-            }
+        AnimatedVisibility(viewModel.isAuth) {
+          Crossfade(viewModel.currentScreen.value) {
+            when (it) {
+              ActionScreen.ACCRUE -> {
+                viewModel.innerViewModels.renderAccrue()
+              }
 
-            ActionScreen.DEBIT -> {
-              viewModel.innerViewModels.renderDebit()
-            }
+              ActionScreen.DEBIT -> {
+                viewModel.innerViewModels.renderDebit()
+              }
 
-            ActionScreen.PRIZES -> {
-              viewModel.innerViewModels.renderPrizes()
-            }
+              ActionScreen.PRIZES -> {
+                viewModel.innerViewModels.renderPrizes()
+              }
 
-            ActionScreen.REGISTRATION -> {
-              viewModel.innerViewModels.renderRegister()
-            }
+              ActionScreen.REGISTRATION -> {
+                viewModel.innerViewModels.renderRegister()
+              }
 
-            ActionScreen.NOTHING -> {
+              ActionScreen.NOTHING -> {
 
+              }
             }
           }
         }

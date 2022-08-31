@@ -22,7 +22,7 @@ import ru.involta.actify.ui.theme.ActifyTheme
 
 @Composable
 fun ActifyDialog(isOpen: Boolean, onClose: () -> Unit = {}, content: @Composable ColumnScope.() -> Unit) {
-  val dialogState = rememberDialogState(/*size = DpSize(500.dp, 500.dp)*/)
+  val dialogState = rememberDialogState(size = DpSize(500.dp, 400.dp))
   Dialog(
     state = dialogState,
     visible = isOpen,

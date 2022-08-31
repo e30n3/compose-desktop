@@ -49,7 +49,7 @@ class MainActivity : Activity() {
       val mainWindowState = rememberWindowState(
         width = width,
         height = height,
-        placement = WindowPlacement.Floating,
+        placement = WindowPlacement.Maximized,
         position = WindowPosition(Alignment.Center),
       )
 
