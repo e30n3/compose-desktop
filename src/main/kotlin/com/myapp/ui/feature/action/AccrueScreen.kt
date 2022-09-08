@@ -45,7 +45,7 @@ fun AccrueScreen(phoneOrCard: String, viewModel: AccrueViewModel, onFinish:()->U
   }) {
     Spacer(modifier = Modifier.height(def))
     Text(
-      text = "Успешное начисление",
+      text = "Успешная покупка",
       style = MaterialTheme.typography.h6,
       modifier = Modifier
         .padding(horizontal = def)
@@ -54,7 +54,7 @@ fun AccrueScreen(phoneOrCard: String, viewModel: AccrueViewModel, onFinish:()->U
     )
     Spacer(modifier = Modifier.height(def / 2))
     Text(
-      text = "на сумму ${viewModel.amount.toDoubleOrNull()?.prettyString} ${viewModel.amount.toDoubleOrNull()?.rubleWord}",
+      text = "Сумма ${viewModel.amount.toDoubleOrNull()?.prettyString} ${viewModel.amount.toDoubleOrNull()?.rubleWord}",
       modifier = Modifier
         .padding(horizontal = def)
         .fillMaxWidth(),

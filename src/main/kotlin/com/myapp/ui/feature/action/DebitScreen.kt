@@ -1,11 +1,9 @@
-package ru.involta.actify.ui.screen.main.nested
+package com.myapp.ui.feature.action
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.GppGood
@@ -17,13 +15,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.myapp.ui.element.ActifyButton
 import com.myapp.ui.element.ActifyDialog
 import com.myapp.util.Toast
@@ -35,7 +31,6 @@ import ru.involta.actify.domain.Result
 import ru.involta.actify.ui.element.ActifyTextField
 import ru.involta.actify.ui.screen.viewmodel.DebitViewModel
 import ru.involta.actify.ui.theme.defaultFiniteAnimationSpec
-import ru.involta.actify.ui.theme.shimmerBgColor
 import ru.involta.actify.util.extention.shimmer
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -173,13 +168,20 @@ fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel, onFinish: () -> 
       onDone = {
         if (viewModel.amount.toDoubleOrNull() == null) viewModel.amount = "0"
       },
+      onStart = {
+        viewModel.debit = ""
+      }
     )
     Spacer(modifier = Modifier.height(def))
     ActifyTextField(
       value = viewModel.debit,
       onValueChange = {
         viewModel.debit = it.filter { c -> c in "1234567890." }.runCatching {
-          substring(0, it.length.coerceAtMost(7))
+          substring(0, it.length.coerceAtMost(7)).toDouble().coerceAtMost(
+            viewModel.stateCheck.value.data?.amount?.value?.coerceAtMost(
+              viewModel.amount.toDoubleOrNull() ?: Double.MAX_VALUE
+            ) ?: Double.MAX_VALUE
+          ).toInt().toString()
         }.getOrNull() ?: ""
       },
       label = "Можно списать",
@@ -229,7 +231,8 @@ fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel, onFinish: () -> 
       enabled = viewModel.amount.isNotBlank() &&
           checkState.value.status != Result.Status.LOADING &&
           viewModel.debit.isNotBlank() &&
-          debitState.value.status != Result.Status.LOADING,
+          debitState.value.status != Result.Status.LOADING &&
+          (viewModel.debit.toDoubleOrNull() ?: 0.0) > 0.0,
       isLoading = debitState.value.status == Result.Status.LOADING
     ) {
       viewModel.debit(phoneOrCard)

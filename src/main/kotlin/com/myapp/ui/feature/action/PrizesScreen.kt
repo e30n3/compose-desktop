@@ -20,9 +20,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.zIndex
 import com.myapp.ui.element.ActifyButton
@@ -32,6 +34,7 @@ import com.myapp.util.extention.tryToSafeCardFormat
 import ru.involta.actify.domain.Result
 import ru.involta.actify.ui.element.ActifyTextField
 import com.myapp.ui.feature.action.PrizesViewModel
+import com.myapp.util.extention.isAdequate
 import ru.involta.actify.ui.theme.defaultFiniteAnimationSpec
 import ru.involta.actify.util.extention.shimmer
 
@@ -44,7 +47,9 @@ fun PrizesScreen(cardOrPhone: String, viewModel: PrizesViewModel, onFinish: () -
 
   val isOpen = rememberSaveable { mutableStateOf(false) }
 
-
+  LaunchedEffect(prizesState.value.status) {
+    if (prizesState.value.status == Result.Status.EMPTY) viewModel.prizes(cardOrPhone)
+  }
 
   LaunchedEffect(key1 = claimPrizeState.value.status) {
     if (claimPrizeState.value.status == Result.Status.SUCCESS && claimPrizeState.value.data?._status == 1) {
@@ -196,11 +201,16 @@ fun PrizesScreen(cardOrPhone: String, viewModel: PrizesViewModel, onFinish: () -
                         CircularProgressIndicator(Modifier.padding(horizontal = def / 2))
                       else
                         IconButton(onClick = { viewModel.claimPrize(cardOrPhone) }) {
-                          Icon(
+                          if (isAdequate) Icon(
                             imageVector = Icons.Filled.Check,
                             contentDescription = "",
                             tint = MaterialTheme.colors.primary,
                             modifier = Modifier.padding(horizontal = def)
+                          ) else Text(
+                            "ВЫДАТЬ",
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(horizontal = def*2)
                           )
                         }
                     }
@@ -262,7 +272,6 @@ fun PrizesScreen(cardOrPhone: String, viewModel: PrizesViewModel, onFinish: () -
               .shimmer()
           )
         }
-        viewModel.prizes(cardOrPhone)
       }
     }
   }

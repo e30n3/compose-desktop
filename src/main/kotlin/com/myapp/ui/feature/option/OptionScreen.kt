@@ -53,11 +53,11 @@ fun OptionScreen(viewModel: OptionViewModel, onCardChange: (String) -> Unit, sel
     ActifyTextField(
       value = viewModel.card,
       onValueChange = {
-        viewModel.card = it.filter { c -> c in "1234567890" }.runCatching {
+        viewModel.card = it.filter { c -> c in "+1234567890" }.runCatching {
           substring(0, it.length.coerceAtMost(12))
         }.getOrNull() ?: ""
         if (it.isBlank()) viewModel.clearBalance()
-        if (it.length >= 11) {
+        if (it.length >= 12) {
           focusManager.clearFocus(true)
           viewModel.balance()
         }
@@ -86,18 +86,33 @@ fun OptionScreen(viewModel: OptionViewModel, onCardChange: (String) -> Unit, sel
       },
       visualTransformation = if (viewModel.card.length >= 12 && '+' !in viewModel.card) PasswordVisualTransformation() else VisualTransformation.None
     ) {
-      AnimatedVisibility(
-        visible = viewModel.card.isNotBlank(), modifier = Modifier.padding(def / 8),
-        enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
-        exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start)
-      ) {
-        IconButton(onClick = {
-          focusManager.clearFocus(true)
-          viewModel.card = ""
-          viewModel.clearBalance()
-          selectedScreen(ActionScreen.NOTHING)
-        }) {
-          Icon(imageVector = Icons.Filled.Clear, contentDescription = "")
+      Row(horizontalArrangement = Arrangement.spacedBy(4.dp)){
+        AnimatedVisibility(
+          visible = viewModel.card.isNotBlank(), modifier = Modifier.padding(def / 8),
+          enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
+          exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start)
+        ) {
+          IconButton(onClick = {
+            focusManager.clearFocus(true)
+            viewModel.balance()
+            selectedScreen(ActionScreen.NOTHING)
+          }) {
+            Icon(imageVector = Icons.Filled.Done, contentDescription = "")
+          }
+        }
+        AnimatedVisibility(
+          visible = viewModel.card.isNotBlank(), modifier = Modifier.padding(def / 8),
+          enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
+          exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start)
+        ) {
+          IconButton(onClick = {
+            focusManager.clearFocus(true)
+            viewModel.card = ""
+            viewModel.clearBalance()
+            selectedScreen(ActionScreen.NOTHING)
+          }) {
+            Icon(imageVector = Icons.Filled.Clear, contentDescription = "")
+          }
         }
       }
       /*AnimatedVisibility(
@@ -148,7 +163,7 @@ fun OptionScreen(viewModel: OptionViewModel, onCardChange: (String) -> Unit, sel
       text = "Зарегистрировать",
       Icons.Filled.PersonAdd,
       modifier = Modifier.padding(start = def, end = def, bottom = def),
-      enabled = stateBalance.value.status != Result.Status.SUCCESS && stateBalance.value.status != Result.Status.LOADING
+      enabled = stateBalance.value.status == Result.Status.ERROR && stateBalance.value.exception?.message?.contains("не найден")?:false
     ) {
       selectedScreen(ActionScreen.REGISTRATION)
     }

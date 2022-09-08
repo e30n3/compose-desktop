@@ -47,7 +47,6 @@ class PrizesViewModel @Inject constructor(
 
   fun prizes(cardOrPhone: String) =
     viewModelScope.launch(Dispatchers.IO) {
-      //if (_stateSendSms.value.status == Result.Status.ERROR) delay(5000)
       _statePrizes.value = Result.loading()
       //delay(2000)
       interactor.prizes(cardOrPhone)

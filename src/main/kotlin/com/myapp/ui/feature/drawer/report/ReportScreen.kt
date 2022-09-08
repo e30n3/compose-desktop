@@ -9,10 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +32,10 @@ import ru.involta.actify.util.extention.shimmer
 fun ReportScreen(viewModel: ReportViewModel, modifier: Modifier = Modifier) {
   val def = remember { 16.dp }
   val reportState = viewModel.stateReport.collectAsState()
+
+  LaunchedEffect(reportState.value.status) {
+    if (reportState.value.status == Result.Status.EMPTY) viewModel.report()
+  }
 
   Column(Modifier.fillMaxSize()) {
     Surface(color = MaterialTheme.colors.secondary) {
@@ -88,19 +89,19 @@ fun ReportScreen(viewModel: ReportViewModel, modifier: Modifier = Modifier) {
             }
           }
 
-         /* Text(
-            "4234",
-            modifier = Modifier
-              .shimmer()
-              .fillMaxWidth()
-              .height(500.dp)
-              .shimmer(),
-            textAlign = TextAlign.Center
-          )*/
+          /* Text(
+             "4234",
+             modifier = Modifier
+               .shimmer()
+               .fillMaxWidth()
+               .height(500.dp)
+               .shimmer(),
+             textAlign = TextAlign.Center
+           )*/
         }
 
         Result.Status.EMPTY -> {
-          viewModel.report()
+
         }
       }
     }

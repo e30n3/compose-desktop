@@ -6,6 +6,7 @@ import com.myapp.actify.data.Interactor
 import com.myapp.actify.di.AppComponent
 import com.myapp.actify.domain.entity.api.response.TerminalRegistrationResponse
 import com.myapp.ui.feature.action.AccrueScreen
+import com.myapp.ui.feature.action.DebitScreen
 import com.myapp.ui.feature.action.PrizesViewModel
 import com.myapp.ui.feature.drawer.activate.ActivateTerminalScreen
 import com.myapp.ui.feature.drawer.activate.ActivateTerminalViewModel

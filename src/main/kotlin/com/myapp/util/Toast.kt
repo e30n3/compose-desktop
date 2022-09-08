@@ -37,7 +37,7 @@ object Toast {
       undecorated = true,
       resizable = false
     ) {
-      LaunchedEffect(key1=isOpen) {
+      /*LaunchedEffect(key1=isOpen) {
         if (isOpen) {
           closeDelay = 1f
           while (closeDelay > 0f) {
@@ -46,13 +46,13 @@ object Toast {
           }
           isOpen = false
         }
-      }
+      }*/
 
       ActifyTheme() {
         WindowDraggableArea {
           Box(Modifier.padding(32.dp)) {
             Surface(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(16.dp), elevation = 16.dp) {
-              LinearProgressIndicator(closeDelay, Modifier.fillMaxWidth().zIndex(1f).align(Alignment.BottomCenter))
+              /*LinearProgressIndicator(closeDelay, Modifier.fillMaxWidth().zIndex(1f).align(Alignment.BottomCenter))*/
               Column(
                 Modifier.padding(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
