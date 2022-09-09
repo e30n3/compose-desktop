@@ -186,7 +186,13 @@ fun ReportItem(r: ReportBody) {
       ) {
         Column() {
           Text(
-            text = "Начисление № ${r.id}",
+            text = "${
+              when (r.typeId) {
+                1L -> "Списание"
+                2L -> "Начисление"
+                else -> "Выдача приза"
+              }
+            } № ${r.id}",
             style = MaterialTheme.typography.h5,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
