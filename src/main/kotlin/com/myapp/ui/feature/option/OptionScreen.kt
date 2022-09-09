@@ -26,12 +26,18 @@ import ru.involta.actify.domain.Result
 import ru.involta.actify.ui.element.ActifyTextField
 
 @Composable
-fun OptionScreen(viewModel: OptionViewModel, onCardChange: (String) -> Unit, selectedScreen: (ActionScreen) -> Unit) {
+fun OptionScreen(
+  viewModel: OptionViewModel,
+  card: String,
+  onCardChange: (String) -> Unit,
+  selectedScreen: (ActionScreen) -> Unit
+) {
   val def = 16.dp
   val stateBalance = viewModel.stateBalance.collectAsState()
   val haptic = LocalHapticFeedback.current
 
-  LaunchedEffect(viewModel.card){
+  LaunchedEffect(card) {
+    if (card == "") viewModel.clearBalance()
     selectedScreen(ActionScreen.NOTHING)
   }
 
@@ -51,17 +57,17 @@ fun OptionScreen(viewModel: OptionViewModel, onCardChange: (String) -> Unit, sel
     Spacer(modifier = Modifier.height(def).weight(1f))
     val focusManager = LocalFocusManager.current
     ActifyTextField(
-      value = viewModel.card,
+      value = card,
       onValueChange = {
-        viewModel.card = it.filter { c -> c in "+1234567890" }.runCatching {
+        val card = it.filter { c -> c in "+1234567890" }.runCatching {
           substring(0, it.length.coerceAtMost(12))
         }.getOrNull() ?: ""
         if (it.isBlank()) viewModel.clearBalance()
         if (it.length >= 12) {
           focusManager.clearFocus(true)
-          viewModel.balance()
+          viewModel.balance(card)
         }
-        onCardChange(viewModel.card)
+        onCardChange(card)
         selectedScreen(ActionScreen.NOTHING)
       }, label = "Телефон либо скан карты",
       modifier = Modifier.padding(horizontal = def),
@@ -70,44 +76,46 @@ fun OptionScreen(viewModel: OptionViewModel, onCardChange: (String) -> Unit, sel
         KeyboardType.Number
       ),
       onStart = {
-        viewModel.balance()
-        if (viewModel.card.length >= 12) viewModel.card = ""
-        onCardChange(viewModel.card)
+        viewModel.balance(card)
+        var localCard = card
+        if (localCard.length >= 12) localCard = ""
+        onCardChange(localCard)
         selectedScreen(ActionScreen.NOTHING)
       },
       onDone = {
-        viewModel.card = viewModel.card.tryToPhoneFormat()
-        viewModel.balance()
-        onCardChange(viewModel.card)
+        var localCard = card
+        localCard = card.tryToPhoneFormat()
+        viewModel.balance(localCard)
+        onCardChange(localCard)
         selectedScreen(ActionScreen.NOTHING)
       },
       onFocus = {
         selectedScreen(ActionScreen.NOTHING)
       },
-      visualTransformation = if (viewModel.card.length >= 12 && '+' !in viewModel.card) PasswordVisualTransformation() else VisualTransformation.None
+      visualTransformation = if (card.length >= 12 && '+' !in card) PasswordVisualTransformation() else VisualTransformation.None
     ) {
-      Row(horizontalArrangement = Arrangement.spacedBy(4.dp)){
+      Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         AnimatedVisibility(
-          visible = viewModel.card.isNotBlank(), modifier = Modifier.padding(def / 8),
+          visible = card.isNotBlank(), modifier = Modifier.padding(def / 8),
           enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
           exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start)
         ) {
           IconButton(onClick = {
             focusManager.clearFocus(true)
-            viewModel.balance()
+            viewModel.balance(card)
             selectedScreen(ActionScreen.NOTHING)
           }) {
             Icon(imageVector = Icons.Filled.Done, contentDescription = "")
           }
         }
         AnimatedVisibility(
-          visible = viewModel.card.isNotBlank(), modifier = Modifier.padding(def / 8),
+          visible = card.isNotBlank(), modifier = Modifier.padding(def / 8),
           enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
           exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start)
         ) {
           IconButton(onClick = {
             focusManager.clearFocus(true)
-            viewModel.card = ""
+            onCardChange("")
             viewModel.clearBalance()
             selectedScreen(ActionScreen.NOTHING)
           }) {
@@ -163,7 +171,7 @@ fun OptionScreen(viewModel: OptionViewModel, onCardChange: (String) -> Unit, sel
       text = "Зарегистрировать",
       Icons.Filled.PersonAdd,
       modifier = Modifier.padding(start = def, end = def, bottom = def),
-      enabled = stateBalance.value.status == Result.Status.ERROR && stateBalance.value.exception?.message?.contains("не найден")?:false
+      enabled = stateBalance.value.status == Result.Status.ERROR && stateBalance.value.exception?.message?.contains("не найден") ?: false
     ) {
       selectedScreen(ActionScreen.REGISTRATION)
     }

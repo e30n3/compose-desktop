@@ -16,6 +16,7 @@ import com.myapp.ui.feature.option.OptionScreen
 import com.myapp.ui.feature.option.OptionViewModel
 import com.myapp.util.ViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -44,6 +45,9 @@ class MainViewModel @Inject constructor(
   var isAuth by mutableStateOf(false)
   var currentScreen = mutableStateOf(ActionScreen.NOTHING)
 
+  fun clearCard() = viewModelScope.launch(Dispatchers.IO) {
+    card = ""
+  }
 
   fun getTerminal() = viewModelScope.launch(Dispatchers.IO) {
     //if (_stateRegistration.value.status == Result.Status.ERROR) delay(5000)
@@ -106,7 +110,7 @@ class MainViewModel @Inject constructor(
     @Composable
     fun renderOption() {
       val scope = rememberCoroutineScope()
-      OptionScreen(optionViewModel.apply { init(scope) }, {
+      OptionScreen(optionViewModel.apply { init(scope) }, card, {
         card = it
       }) {
         currentScreen.value = it
@@ -123,6 +127,7 @@ class MainViewModel @Inject constructor(
       val scope = rememberCoroutineScope()
       AccrueScreen(card, accrueViewModel.apply { init(scope) }) {
         currentScreen.value = ActionScreen.NOTHING
+        clearCard()
       }
       DisposableEffect(Unit) {
         onDispose {
@@ -136,6 +141,7 @@ class MainViewModel @Inject constructor(
       val scope = rememberCoroutineScope()
       DebitScreen(card, debitViewModel.apply { init(scope) }) {
         currentScreen.value = ActionScreen.NOTHING
+        clearCard()
       }
       DisposableEffect(Unit) {
         onDispose {
@@ -149,6 +155,7 @@ class MainViewModel @Inject constructor(
       val scope = rememberCoroutineScope()
       PrizesScreen(card, prizesViewModel.apply { init(scope) }) {
         currentScreen.value = ActionScreen.NOTHING
+        clearCard()
       }
       DisposableEffect(Unit) {
         onDispose {

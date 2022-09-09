@@ -22,8 +22,6 @@ class OptionViewModel @Inject constructor(
   private val interactor: Interactor,
 ) : ViewModel() {
 
-  var card by mutableStateOf("")
-
   private val _stateBalance: MutableStateFlow<Result<BalanceResponse>> =
     MutableStateFlow(Result.empty())
   val stateBalance: StateFlow<Result<BalanceResponse>> = _stateBalance
@@ -31,7 +29,7 @@ class OptionViewModel @Inject constructor(
     _stateBalance.value = Result.empty()
   }
 
-  fun balance() =
+  fun balance(card: String) =
     viewModelScope.launch(Dispatchers.IO) {
       //if (_stateSendSms.value.status == Result.Status.ERROR) delay(5000)
       _stateBalance.value = Result.loading()
