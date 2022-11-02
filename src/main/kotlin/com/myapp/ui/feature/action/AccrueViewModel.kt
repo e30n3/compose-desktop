@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.involta.actify.domain.Result
-import ru.involta.actify.domain.entity.api.response.BalanceResponse
+import com.myapp.actify.domain.entity.api.response.BalanceResponse
 import javax.inject.Inject
 import kotlin.math.roundToLong
 

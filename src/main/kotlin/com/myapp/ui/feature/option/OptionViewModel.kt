@@ -1,8 +1,5 @@
 package com.myapp.ui.feature.option
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.myapp.actify.data.Interactor
 import com.myapp.util.ViewModel
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +10,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 import ru.involta.actify.domain.Result
-import ru.involta.actify.domain.entity.api.response.BalanceResponse
+import com.myapp.actify.domain.entity.api.response.BalanceResponse
 import javax.inject.Inject
 
 

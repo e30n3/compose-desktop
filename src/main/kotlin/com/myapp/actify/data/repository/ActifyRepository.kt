@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.involta.actify.domain.entity.api.ResponseBody
 import ru.involta.actify.domain.entity.api.request.*
-import ru.involta.actify.domain.entity.api.response.BalanceResponse
+import com.myapp.actify.domain.entity.api.response.BalanceResponse
 import ru.involta.actify.domain.entity.api.response.DebitCheckResponse
 import ru.involta.actify.domain.entity.api.response.PrizesResponse
 import ru.involta.actify.domain.entity.api.response.ReportResponse

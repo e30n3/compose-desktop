@@ -7,6 +7,7 @@ import com.myapp.actify.data.Interactor
 import com.myapp.util.ViewModel
 import com.myapp.util.extention.prettyString
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,15 +46,18 @@ class DebitViewModel @Inject constructor(
   }
 
 
-  fun debitCheck(cardOrPhone: String) =
-    viewModelScope.launch(Dispatchers.IO) {
+  var debitJob: Job? = null
+
+  fun debitCheck(cardOrPhone: String) {
+    if (debitJob?.isActive == true) debitJob?.cancel()
+    debitJob = viewModelScope.launch(Dispatchers.IO) {
       lastCheckValue = _stateCheck.value.data?.amount?.value?.prettyString ?: "⠀⠀⠀"
       //if (_stateCheck.value.status == Result.Status.ERROR) delay(5000)
       _stateCheck.value = Result.loading()
       //delay(2000)
       interactor.debitCheck(
         cardOrPhone,
-        Double.MAX_VALUE
+        amount.toDoubleOrNull() ?: 0.0
       )
         .catch { e ->
           println(e.stackTraceToString())
@@ -68,6 +72,7 @@ class DebitViewModel @Inject constructor(
               Result.error(Throwable(data?.message ?: "Проверьте подключение к сети инернет"))
         }
     }
+  }
 
   fun debit(cardOrPhone: String) =
     viewModelScope.launch(Dispatchers.IO) {

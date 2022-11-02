@@ -161,6 +161,7 @@ fun DebitScreen(phoneOrCard: String, viewModel: DebitViewModel, onFinish: () -> 
           it.filter { c -> c in "1234567890." }.runCatching {
             substring(0, it.length.coerceAtMost(7))
           }.getOrNull() ?: ""
+        viewModel.debitCheck(phoneOrCard)
       },
       label = "Сумма покупки",
       modifier = Modifier.padding(horizontal = def),

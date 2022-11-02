@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.myapp.util.extention.prettyString
 import ru.involta.actify.domain.Result
-import ru.involta.actify.domain.entity.api.response.BalanceResponse
+import com.myapp.actify.domain.entity.api.response.BalanceResponse
 import ru.involta.actify.util.extention.shimmer
 
 @OptIn(ExperimentalAnimationApi::class)

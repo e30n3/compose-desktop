@@ -1,5 +1,6 @@
 package com.myapp.actify.data.api
 
+import com.myapp.actify.domain.entity.api.response.BalanceResponse
 import com.myapp.actify.domain.entity.api.response.TerminalRegistrationResponse
 import retrofit2.http.Body
 import retrofit2.http.Headers
