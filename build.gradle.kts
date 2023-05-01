@@ -13,7 +13,7 @@ kapt {
 }
 
 group = "com.myapp"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
   jcenter()
@@ -101,8 +101,8 @@ compose.desktop {
 
       targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
       packageName = "Actify"
-      packageVersion = "1.0.0"
-      version = "1.0.0"
+      packageVersion = "1.0.1"
+      version = "1.0.1"
       description = "Actify cashbox application builded with JetPack Compose"
       copyright = "© 2022 e30n3@yandex.ru Ivan Zaytsev. All rights reserved."
       vendor = "Involta"
@@ -118,6 +118,7 @@ compose.desktop {
       windows {
         iconFile.set(iconsRoot.resolve("launcher_icons/windows.ico"))
         dirChooser = true
+        shortcut = true
 
       }
 
